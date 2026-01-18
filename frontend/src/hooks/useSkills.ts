@@ -1,10 +1,8 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { skillsService } from "@/services";
-import { useUser } from "@/contexts";
 import type { Skill, CreateSkillInput, UpdateSkillInput } from "@/types";
 
 export function useSkills() {
-  const { user } = useUser();
   const [skills, setSkills] = useState<Skill[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -13,27 +11,24 @@ export function useSkills() {
     setLoading(true);
     setError(null);
     try {
-      const data = await skillsService.getAll(user.id);
+      const data = await skillsService.getAll();
       setSkills(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to fetch skills");
     } finally {
       setLoading(false);
     }
-  }, [user.id]);
+  }, []);
 
   useEffect(() => {
     fetchSkills();
   }, [fetchSkills]);
 
-  const createSkill = useCallback(
-    async (data: CreateSkillInput) => {
-      const newSkill = await skillsService.create(user.id, data);
-      setSkills((prev) => [...prev, newSkill]);
-      return newSkill;
-    },
-    [user.id]
-  );
+  const createSkill = useCallback(async (data: CreateSkillInput) => {
+    const newSkill = await skillsService.create(data);
+    setSkills((prev) => [...prev, newSkill]);
+    return newSkill;
+  }, []);
 
   const updateSkill = useCallback(
     async (skillId: string, data: UpdateSkillInput) => {

@@ -1,17 +1,20 @@
 import { apiClient } from "./api";
 import type { Goal, CreateGoalInput, UpdateGoalInput } from "@/types";
 
+// 個人専用アプリのため固定ユーザーID
+const USER_ID = "default";
+
 export const goalsService = {
-  async getAll(userId: string): Promise<Goal[]> {
-    return apiClient.get<Goal[]>(`/goals?user_id=${userId}`);
+  async getAll(): Promise<Goal[]> {
+    return apiClient.get<Goal[]>(`/goals?user_id=${USER_ID}`);
   },
 
   async getById(goalId: string): Promise<Goal> {
     return apiClient.get<Goal>(`/goals/${goalId}`);
   },
 
-  async create(userId: string, data: CreateGoalInput): Promise<Goal> {
-    return apiClient.post<Goal>("/goals", { ...data, user_id: userId });
+  async create(data: CreateGoalInput): Promise<Goal> {
+    return apiClient.post<Goal>("/goals", { ...data, user_id: USER_ID });
   },
 
   async update(goalId: string, data: UpdateGoalInput): Promise<Goal> {

@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { useUser } from "@/contexts";
 import styles from "./Header.module.css";
 
 interface HeaderProps {
@@ -7,8 +6,6 @@ interface HeaderProps {
 }
 
 export function Header({ onMenuClick }: HeaderProps) {
-  const { user } = useUser();
-
   return (
     <header className={styles.header}>
       <div className={styles.left}>
@@ -24,14 +21,6 @@ export function Header({ onMenuClick }: HeaderProps) {
         <Link to="/" className={styles.logo}>
           Personal Growth Tracker
         </Link>
-      </div>
-      <div className={styles.right}>
-        <div className={styles.userInfo}>
-          <div className={styles.avatar}>
-            {user.name.charAt(0).toUpperCase()}
-          </div>
-          <span className={styles.userName}>{user.name}</span>
-        </div>
       </div>
     </header>
   );

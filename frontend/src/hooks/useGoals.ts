@@ -1,10 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { goalsService } from "@/services";
-import { useUser } from "@/contexts";
 import type { Goal, CreateGoalInput, UpdateGoalInput } from "@/types";
 
 export function useGoals() {
-  const { user } = useUser();
   const [goals, setGoals] = useState<Goal[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -13,27 +11,24 @@ export function useGoals() {
     setLoading(true);
     setError(null);
     try {
-      const data = await goalsService.getAll(user.id);
+      const data = await goalsService.getAll();
       setGoals(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to fetch goals");
     } finally {
       setLoading(false);
     }
-  }, [user.id]);
+  }, []);
 
   useEffect(() => {
     fetchGoals();
   }, [fetchGoals]);
 
-  const createGoal = useCallback(
-    async (data: CreateGoalInput) => {
-      const newGoal = await goalsService.create(user.id, data);
-      setGoals((prev) => [...prev, newGoal]);
-      return newGoal;
-    },
-    [user.id]
-  );
+  const createGoal = useCallback(async (data: CreateGoalInput) => {
+    const newGoal = await goalsService.create(data);
+    setGoals((prev) => [...prev, newGoal]);
+    return newGoal;
+  }, []);
 
   const updateGoal = useCallback(
     async (goalId: string, data: UpdateGoalInput) => {

@@ -1,17 +1,20 @@
 import { apiClient } from "./api";
 import type { Skill, CreateSkillInput, UpdateSkillInput } from "@/types";
 
+// 個人専用アプリのため固定ユーザーID
+const USER_ID = "default";
+
 export const skillsService = {
-  async getAll(userId: string): Promise<Skill[]> {
-    return apiClient.get<Skill[]>(`/skills?user_id=${userId}`);
+  async getAll(): Promise<Skill[]> {
+    return apiClient.get<Skill[]>(`/skills?user_id=${USER_ID}`);
   },
 
   async getById(skillId: string): Promise<Skill> {
     return apiClient.get<Skill>(`/skills/${skillId}`);
   },
 
-  async create(userId: string, data: CreateSkillInput): Promise<Skill> {
-    return apiClient.post<Skill>("/skills", { ...data, user_id: userId });
+  async create(data: CreateSkillInput): Promise<Skill> {
+    return apiClient.post<Skill>("/skills", { ...data, user_id: USER_ID });
   },
 
   async update(skillId: string, data: UpdateSkillInput): Promise<Skill> {
