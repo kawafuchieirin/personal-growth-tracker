@@ -45,7 +45,7 @@ app.include_router(router, prefix="/api/v1")
 
 
 @app.get("/health")
-async def health_check():
+async def health_check() -> dict[str, str]:
     """Health check endpoint."""
     return {"status": "healthy", "api": "skills"}
 

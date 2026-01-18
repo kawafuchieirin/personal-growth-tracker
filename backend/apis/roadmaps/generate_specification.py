@@ -9,7 +9,7 @@ import yaml
 from main import app
 
 
-def generate_openapi_spec():
+def generate_openapi_spec() -> None:
     """Generate OpenAPI specification in JSON and YAML formats."""
     openapi_schema = app.openapi()
 
