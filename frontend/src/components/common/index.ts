@@ -5,3 +5,4 @@ export { Select } from "./Select";
 export { Modal } from "./Modal";
 export { Badge } from "./Badge";
 export { ProgressBar } from "./ProgressBar";
+export { FeatureNav } from "./FeatureNav";
