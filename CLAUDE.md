@@ -125,6 +125,17 @@ pre-commit run --all-files  # 全ファイルに対して実行
 
 `.mcp.json` でPlaywright MCPサーバーを設定済み。ブラウザ操作やE2Eテストの自動化に利用可能。
 
+## Hooks設定
+
+タスク完了時にSlack通知を送信。設定方法:
+
+```bash
+# 環境変数にSlack Webhook URLを設定
+export SLACK_WEBHOOK_URL="https://hooks.slack.com/services/..."
+```
+
+設定ファイル: `.claude/settings.json`
+
 ## 専門エージェント
 
 `.claude/agents/` に専門エージェントを配置:
