@@ -147,6 +147,9 @@ pre-commit install
 | `terraform apply` | デプロイ |
 | `terraform destroy` | リソース削除 |
 
+
+awsリンク
+https://d1zi7fgixextim.cloudfront.net
 ## ライセンス
 
 Private
