@@ -16,11 +16,11 @@ provider "aws" {
 module "skills_api" {
   source = "./modules/skills-api"
 
-  environment      = var.environment
-  aws_region       = var.aws_region
-  project_name     = var.project_name
-  ecr_repository   = var.ecr_repository
-  lambda_memory    = var.lambda_memory
-  lambda_timeout   = var.lambda_timeout
-  dynamodb_table   = var.dynamodb_table
+  environment    = var.environment
+  aws_region     = var.aws_region
+  project_name   = var.project_name
+  ecr_repository = var.ecr_repository
+  lambda_memory  = var.lambda_memory
+  lambda_timeout = var.lambda_timeout
+  dynamodb_table = var.dynamodb_table
 }
