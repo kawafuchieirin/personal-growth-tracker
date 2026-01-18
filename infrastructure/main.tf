@@ -1,3 +1,11 @@
+# =============================================================================
+# Personal Growth Tracker - Main Terraform Configuration
+# =============================================================================
+# - Single environment (no dev/stg/prod separation)
+# - ECR images use 'latest' tag only
+# - API Gateway without custom domain
+# =============================================================================
+
 terraform {
   required_version = ">= 1.5.0"
 
@@ -21,16 +29,37 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Project   = "personal-growth-tracker"
+      Project   = var.project_name
       ManagedBy = "terraform"
     }
   }
 }
 
+# =============================================================================
+# Variables
+# =============================================================================
+
 variable "aws_region" {
   description = "AWS region"
+  type        = string
   default     = "ap-northeast-1"
 }
+
+variable "project_name" {
+  description = "Project name"
+  type        = string
+  default     = "personal-growth-tracker"
+}
+
+variable "apis" {
+  description = "List of API names"
+  type        = list(string)
+  default     = ["goals", "roadmaps", "skills"]
+}
+
+# =============================================================================
+# Modules
+# =============================================================================
 
 module "dynamodb" {
   source = "./modules/dynamodb"
@@ -39,6 +68,8 @@ module "dynamodb" {
 module "lambda" {
   source = "./modules/lambda"
 
+  project_name        = var.project_name
+  apis                = var.apis
   goals_table_name    = module.dynamodb.goals_table_name
   roadmaps_table_name = module.dynamodb.roadmaps_table_name
   skills_table_name   = module.dynamodb.skills_table_name
@@ -47,27 +78,46 @@ module "lambda" {
 module "api_gateway" {
   source = "./modules/api-gateway"
 
-  lambda_function_arn  = module.lambda.lambda_function_arn
-  lambda_function_name = module.lambda.lambda_function_name
-  aws_region           = var.aws_region
+  project_name = var.project_name
+  aws_region   = var.aws_region
+
+  lambda_functions = {
+    for api in var.apis : api => {
+      function_name = module.lambda.lambda_functions[api].function_name
+      function_arn  = module.lambda.lambda_functions[api].function_arn
+    }
+  }
 }
 
 module "cloudfront" {
   source = "./modules/cloudfront"
 }
 
+# =============================================================================
+# Outputs
+# =============================================================================
+
 output "api_endpoint" {
-  value = module.api_gateway.api_endpoint
+  description = "API Gateway endpoint URL"
+  value       = module.api_gateway.api_endpoint
+}
+
+output "api_routes" {
+  description = "API routes"
+  value       = module.api_gateway.api_routes
+}
+
+output "lambda_functions" {
+  description = "Lambda function details"
+  value       = module.lambda.lambda_functions
 }
 
 output "cloudfront_domain" {
-  value = module.cloudfront.cloudfront_domain_name
+  description = "CloudFront domain"
+  value       = module.cloudfront.cloudfront_domain_name
 }
 
 output "frontend_bucket" {
-  value = module.cloudfront.s3_bucket_name
-}
-
-output "lambda_function_url" {
-  value = module.lambda.lambda_function_url
+  description = "Frontend S3 bucket"
+  value       = module.cloudfront.s3_bucket_name
 }

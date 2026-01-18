@@ -1,0 +1,21 @@
+services:
+  roadmaps-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8003:8080"
+    environment:
+      - AWS_REGION=ap-northeast-1
+      - ROADMAPS_TABLE_NAME=personal-growth-tracker-roadmaps
+      - DEBUG=true
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+    depends_on:
+      - dynamodb-local
+
+  dynamodb-local:
+    image: amazon/dynamodb-local:latest
+    ports:
+      - "8000:8000"
+    command: "-jar DynamoDBLocal.jar -sharedDb -inMemory"

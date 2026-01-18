@@ -1,0 +1,18 @@
+# Skills API Configuration
+# =============================================================================
+
+api:
+  name: skills
+  version: 1.0.0
+  description: Skills tracking API
+  path_prefix: /api/v1/skills
+
+aws:
+  region: ap-northeast-1
+  ecr_repository: personal-growth-tracker-skills
+  lambda_function: personal-growth-tracker-skills
+
+dynamodb:
+  table_name: personal-growth-tracker-skills
+  partition_key: user_id
+  sort_key: skill_id

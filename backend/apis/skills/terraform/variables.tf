@@ -1,0 +1,41 @@
+variable "environment" {
+  description = "Environment name"
+  type        = string
+  default     = "dev"
+}
+
+variable "aws_region" {
+  description = "AWS region"
+  type        = string
+  default     = "ap-northeast-1"
+}
+
+variable "project_name" {
+  description = "Project name"
+  type        = string
+  default     = "personal-growth-tracker"
+}
+
+variable "ecr_repository" {
+  description = "ECR repository name"
+  type        = string
+  default     = "personal-growth-tracker-skills"
+}
+
+variable "lambda_memory" {
+  description = "Lambda memory size"
+  type        = number
+  default     = 256
+}
+
+variable "lambda_timeout" {
+  description = "Lambda timeout in seconds"
+  type        = number
+  default     = 30
+}
+
+variable "dynamodb_table" {
+  description = "DynamoDB table name"
+  type        = string
+  default     = "personal-growth-tracker-skills"
+}

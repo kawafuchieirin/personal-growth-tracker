@@ -1,0 +1,18 @@
+# Roadmaps API Configuration
+# =============================================================================
+
+api:
+  name: roadmaps
+  version: 1.0.0
+  description: Roadmaps and milestones API
+  path_prefix: /api/v1/roadmaps
+
+aws:
+  region: ap-northeast-1
+  ecr_repository: personal-growth-tracker-roadmaps
+  lambda_function: personal-growth-tracker-roadmaps
+
+dynamodb:
+  table_name: personal-growth-tracker-roadmaps
+  partition_key: goal_id
+  sort_key: milestone_id

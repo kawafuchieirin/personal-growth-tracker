@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - AWS_REGION=ap-northeast-1
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}
+      - GOALS_TABLE_NAME=personal-growth-tracker-goals
+      - ROADMAPS_TABLE_NAME=personal-growth-tracker-roadmaps
+      - SKILLS_TABLE_NAME=personal-growth-tracker-skills
+      - DEBUG=true
+    volumes:
+      - ~/.aws:/root/.aws:ro
+
+  dynamodb-local:
+    image: amazon/dynamodb-local:latest
+    ports:
+      - "8000:8000"
+    command: "-jar DynamoDBLocal.jar -sharedDb -inMemory"
