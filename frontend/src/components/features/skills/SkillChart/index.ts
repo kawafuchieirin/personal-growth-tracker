@@ -1,0 +1,1 @@
+export { SkillChart } from './SkillChart';
