@@ -1,17 +1,11 @@
-variable "project_name" {
-  type = string
-}
-
-variable "environment" {
-  type = string
+variable "s3_bucket_name" {
+  description = "S3 bucket name for frontend (must be globally unique)"
+  type        = string
+  default     = "pgt-frontend"
 }
 
 resource "aws_s3_bucket" "frontend" {
-  bucket = "${var.project_name}-${var.environment}-frontend"
-
-  tags = {
-    Environment = var.environment
-  }
+  bucket = var.s3_bucket_name
 }
 
 resource "aws_s3_bucket_public_access_block" "frontend" {
@@ -24,7 +18,7 @@ resource "aws_s3_bucket_public_access_block" "frontend" {
 }
 
 resource "aws_cloudfront_origin_access_control" "frontend" {
-  name                              = "${var.project_name}-${var.environment}-oac"
+  name                              = "frontend-oac"
   origin_access_control_origin_type = "s3"
   signing_behavior                  = "always"
   signing_protocol                  = "sigv4"
@@ -77,10 +71,6 @@ resource "aws_cloudfront_distribution" "frontend" {
 
   viewer_certificate {
     cloudfront_default_certificate = true
-  }
-
-  tags = {
-    Environment = var.environment
   }
 }
 

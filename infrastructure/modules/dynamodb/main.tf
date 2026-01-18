@@ -1,13 +1,5 @@
-variable "project_name" {
-  type = string
-}
-
-variable "environment" {
-  type = string
-}
-
 resource "aws_dynamodb_table" "goals" {
-  name         = "${var.project_name}-${var.environment}-goals"
+  name         = "goals"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "user_id"
   range_key    = "goal_id"
@@ -21,15 +13,10 @@ resource "aws_dynamodb_table" "goals" {
     name = "goal_id"
     type = "S"
   }
-
-  tags = {
-    Name        = "${var.project_name}-${var.environment}-goals"
-    Environment = var.environment
-  }
 }
 
 resource "aws_dynamodb_table" "roadmaps" {
-  name         = "${var.project_name}-${var.environment}-roadmaps"
+  name         = "roadmaps"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "goal_id"
   range_key    = "milestone_id"
@@ -43,15 +30,10 @@ resource "aws_dynamodb_table" "roadmaps" {
     name = "milestone_id"
     type = "S"
   }
-
-  tags = {
-    Name        = "${var.project_name}-${var.environment}-roadmaps"
-    Environment = var.environment
-  }
 }
 
 resource "aws_dynamodb_table" "skills" {
-  name         = "${var.project_name}-${var.environment}-skills"
+  name         = "skills"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "user_id"
   range_key    = "skill_id"
@@ -64,11 +46,6 @@ resource "aws_dynamodb_table" "skills" {
   attribute {
     name = "skill_id"
     type = "S"
-  }
-
-  tags = {
-    Name        = "${var.project_name}-${var.environment}-skills"
-    Environment = var.environment
   }
 }
 

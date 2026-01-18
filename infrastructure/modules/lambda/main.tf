@@ -1,21 +1,16 @@
-variable "project_name" {
-  type = string
-}
-
-variable "environment" {
-  type = string
-}
-
 variable "goals_table_name" {
-  type = string
+  description = "DynamoDB goals table name"
+  type        = string
 }
 
 variable "roadmaps_table_name" {
-  type = string
+  description = "DynamoDB roadmaps table name"
+  type        = string
 }
 
 variable "skills_table_name" {
-  type = string
+  description = "DynamoDB skills table name"
+  type        = string
 }
 
 data "aws_iam_policy_document" "lambda_assume_role" {
@@ -29,12 +24,8 @@ data "aws_iam_policy_document" "lambda_assume_role" {
 }
 
 resource "aws_iam_role" "lambda" {
-  name               = "${var.project_name}-${var.environment}-lambda-role"
+  name               = "lambda-role"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
-
-  tags = {
-    Environment = var.environment
-  }
 }
 
 data "aws_iam_policy_document" "lambda_policy" {
@@ -65,13 +56,13 @@ data "aws_iam_policy_document" "lambda_policy" {
 }
 
 resource "aws_iam_role_policy" "lambda" {
-  name   = "${var.project_name}-${var.environment}-lambda-policy"
+  name   = "lambda-policy"
   role   = aws_iam_role.lambda.id
   policy = data.aws_iam_policy_document.lambda_policy.json
 }
 
 resource "aws_lambda_function" "api" {
-  function_name = "${var.project_name}-${var.environment}-api"
+  function_name = "api"
   role          = aws_iam_role.lambda.arn
   handler       = "app.main.handler"
   runtime       = "python3.14"
@@ -83,15 +74,10 @@ resource "aws_lambda_function" "api" {
 
   environment {
     variables = {
-      ENVIRONMENT         = var.environment
       GOALS_TABLE_NAME    = var.goals_table_name
       ROADMAPS_TABLE_NAME = var.roadmaps_table_name
       SKILLS_TABLE_NAME   = var.skills_table_name
     }
-  }
-
-  tags = {
-    Environment = var.environment
   }
 
   lifecycle {
