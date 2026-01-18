@@ -1,6 +1,8 @@
 import type { ApiError } from "@/types";
 
-const API_BASE_URL = "/api";
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://ttoh4joopk.execute-api.ap-northeast-1.amazonaws.com/api/v1";
 
 class ApiClient {
   private baseUrl: string;
