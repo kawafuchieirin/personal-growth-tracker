@@ -1,0 +1,61 @@
+repos:
+  # General
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: detect-private-key
+
+  # Python - Ruff
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.0
+    hooks:
+      - id: ruff
+        args: [--fix]
+        files: ^backend/
+      - id: ruff-format
+        files: ^backend/
+
+  # Python - Type checking (using local poetry)
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy
+        entry: poetry run mypy
+        language: system
+        types: [python]
+        files: ^backend/app/
+        pass_filenames: false
+        args: [app]
+
+  # Frontend - ESLint & Prettier
+  - repo: local
+    hooks:
+      - id: eslint
+        name: eslint
+        entry: npm run lint --prefix frontend --
+        language: system
+        files: ^frontend/src/.*\.(ts|tsx)$
+        pass_filenames: false
+
+      - id: prettier
+        name: prettier
+        entry: npm run format:check --prefix frontend --
+        language: system
+        files: ^frontend/src/.*\.(ts|tsx|css)$
+        pass_filenames: false
+
+  # Terraform
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.86.0
+    hooks:
+      - id: terraform_fmt
+      - id: terraform_validate
+      - id: terraform_tflint
+        args:
+          - --args=--config=__GIT_WORKING_DIR__/.tflint.hcl
