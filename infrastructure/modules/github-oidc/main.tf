@@ -1,10 +1,10 @@
-# GitHub Actions OIDC Provider
-resource "aws_iam_openid_connect_provider" "github" {
-  url             = "https://token.actions.githubusercontent.com"
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1", "1c58a3a8518e8759bf075b76b750d4f2df264fcd"]
+# Get AWS Account ID
+data "aws_caller_identity" "current" {}
 
-  tags = var.tags
+# Use existing GitHub OIDC Provider (created outside of this module)
+# If it doesn't exist, create it using: aws iam create-open-id-connect-provider ...
+data "aws_iam_openid_connect_provider" "github" {
+  url = "https://token.actions.githubusercontent.com"
 }
 
 # IAM Role for GitHub Actions
@@ -17,7 +17,7 @@ resource "aws_iam_role" "github_actions" {
       {
         Effect = "Allow"
         Principal = {
-          Federated = aws_iam_openid_connect_provider.github.arn
+          Federated = data.aws_iam_openid_connect_provider.github.arn
         }
         Action = "sts:AssumeRoleWithWebIdentity"
         Condition = {
