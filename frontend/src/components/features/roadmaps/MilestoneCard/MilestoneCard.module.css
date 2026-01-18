@@ -1,0 +1,85 @@
+.card {
+  display: flex;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  transition: border-color var(--transition-fast);
+}
+
+.card:hover {
+  border-color: var(--border-color-light);
+}
+
+.indicator {
+  width: 4px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.not_started .indicator {
+  background-color: var(--color-gray-500);
+}
+
+.in_progress .indicator {
+  background-color: var(--color-primary-500);
+}
+
+.completed .indicator {
+  background-color: var(--color-success-500);
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
+}
+
+.title {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.completed .title {
+  text-decoration: line-through;
+  color: var(--text-tertiary);
+}
+
+.description {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin: 0 0 var(--spacing-sm);
+  line-height: var(--line-height-normal);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.date {
+  font-size: var(--font-size-sm);
+  color: var(--text-tertiary);
+}
+
+.overdue {
+  color: var(--color-error-500);
+}
+
+.actions {
+  display: flex;
+  gap: var(--spacing-xs);
+}

@@ -1,0 +1,94 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.progress {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.timelineItem {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 24px;
+  flex-shrink: 0;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--bg-tertiary);
+  border: 2px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.dot.completed {
+  background-color: var(--color-success-500);
+  border-color: var(--color-success-500);
+}
+
+.line {
+  width: 2px;
+  flex: 1;
+  background-color: var(--border-color);
+  min-height: 20px;
+}
+
+.cardWrapper {
+  flex: 1;
+  padding-bottom: var(--spacing-md);
+}
+
+.loading,
+.error,
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-xl);
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.deleteConfirm {
+  text-align: center;
+}
+
+.deleteConfirm p {
+  margin: 0 0 var(--spacing-lg);
+}
+
+.deleteActions {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-sm);
+}

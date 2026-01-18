@@ -1,11 +1,19 @@
 import { Routes, Route } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
+import { Layout } from "@/components/layout";
+import { Dashboard } from "@/pages/Dashboard";
+import { GoalsPage, GoalDetailPage } from "@/pages/Goals";
+import { SkillsPage } from "@/pages/Skills";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Dashboard />} />
-    </Routes>
+    <Layout>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/goals" element={<GoalsPage />} />
+        <Route path="/goals/:goalId" element={<GoalDetailPage />} />
+        <Route path="/skills" element={<SkillsPage />} />
+      </Routes>
+    </Layout>
   );
 }
 
