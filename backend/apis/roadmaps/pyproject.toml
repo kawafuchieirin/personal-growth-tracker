@@ -3,7 +3,7 @@ name = "roadmaps-api"
 version = "1.0.0"
 description = "Roadmaps and milestones API for Personal Growth Tracker"
 authors = ["Your Name <you@example.com>"]
-readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
