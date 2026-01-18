@@ -57,11 +57,7 @@ asyncio_mode = "auto"
 python_version = "3.12"
 strict = true
 plugins = ["pydantic.mypy"]
-
-[[tool.mypy.overrides]]
-module = ["apis.*.tests.*"]
-disallow_untyped_defs = false
-disallow_untyped_calls = false
+exclude = ["tests/"]
 
 [tool.coverage.run]
 source = ["apis"]
