@@ -1,12 +1,12 @@
 """Skills API handler."""
 
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from fastapi import APIRouter, HTTPException
 
 from client import SkillsClient, get_settings
-from models import SkillCreate, SkillUpdate, SkillResponse
+from models import SkillCreate, SkillResponse, SkillUpdate
 
 router = APIRouter(prefix="/skills", tags=["skills"])
 
@@ -34,7 +34,7 @@ async def get_skill(skill_id: str, user_id: str) -> SkillResponse:
 async def create_skill(user_id: str, skill: SkillCreate) -> SkillResponse:
     """Create a new skill."""
     skill_id = str(uuid.uuid4())
-    now = datetime.now(timezone.utc).isoformat()
+    now = datetime.now(UTC).isoformat()
 
     item = {
         "user_id": user_id,
@@ -57,7 +57,7 @@ async def update_skill(
         raise HTTPException(status_code=404, detail="Skill not found")
 
     update_data = skill.model_dump(exclude_unset=True)
-    update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    update_data["updated_at"] = datetime.now(UTC).isoformat()
 
     updated_item = {**existing, **update_data}
     db.put_item(updated_item)

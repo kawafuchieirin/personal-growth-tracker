@@ -1,6 +1,7 @@
 """Data models for Goals API."""
 
 from enum import Enum
+
 from pydantic import BaseModel, Field
 
 

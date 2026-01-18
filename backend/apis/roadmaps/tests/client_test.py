@@ -1,8 +1,9 @@
 """Tests for Roadmaps API DynamoDB client."""
 
-import pytest
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
+
 import boto3
+import pytest
 from moto import mock_aws
 
 
@@ -37,7 +38,9 @@ class TestRoadmapsClient:
 
         with patch("client.get_settings") as mock_settings:
             mock_settings.return_value.aws_region = "ap-northeast-1"
-            mock_settings.return_value.roadmaps_table_name = "personal-growth-tracker-roadmaps"
+            mock_settings.return_value.roadmaps_table_name = (
+                "personal-growth-tracker-roadmaps"
+            )
 
             client = RoadmapsClient()
             item = {
@@ -47,7 +50,9 @@ class TestRoadmapsClient:
             }
             client.put_item(item)
 
-            result = client.get_item({"goal_id": "goal-1", "milestone_id": "milestone-1"})
+            result = client.get_item(
+                {"goal_id": "goal-1", "milestone_id": "milestone-1"}
+            )
             assert result["title"] == "Setup environment"
 
     @mock_aws
@@ -57,7 +62,9 @@ class TestRoadmapsClient:
 
         with patch("client.get_settings") as mock_settings:
             mock_settings.return_value.aws_region = "ap-northeast-1"
-            mock_settings.return_value.roadmaps_table_name = "personal-growth-tracker-roadmaps"
+            mock_settings.return_value.roadmaps_table_name = (
+                "personal-growth-tracker-roadmaps"
+            )
 
             client = RoadmapsClient()
             item = {
@@ -68,7 +75,9 @@ class TestRoadmapsClient:
             client.put_item(item)
             client.delete_item({"goal_id": "goal-1", "milestone_id": "milestone-1"})
 
-            result = client.get_item({"goal_id": "goal-1", "milestone_id": "milestone-1"})
+            result = client.get_item(
+                {"goal_id": "goal-1", "milestone_id": "milestone-1"}
+            )
             assert result is None
 
     @mock_aws
@@ -78,12 +87,20 @@ class TestRoadmapsClient:
 
         with patch("client.get_settings") as mock_settings:
             mock_settings.return_value.aws_region = "ap-northeast-1"
-            mock_settings.return_value.roadmaps_table_name = "personal-growth-tracker-roadmaps"
+            mock_settings.return_value.roadmaps_table_name = (
+                "personal-growth-tracker-roadmaps"
+            )
 
             client = RoadmapsClient()
-            client.put_item({"goal_id": "goal-1", "milestone_id": "milestone-1", "title": "Step 1"})
-            client.put_item({"goal_id": "goal-1", "milestone_id": "milestone-2", "title": "Step 2"})
-            client.put_item({"goal_id": "goal-2", "milestone_id": "milestone-3", "title": "Step 3"})
+            client.put_item(
+                {"goal_id": "goal-1", "milestone_id": "milestone-1", "title": "Step 1"}
+            )
+            client.put_item(
+                {"goal_id": "goal-1", "milestone_id": "milestone-2", "title": "Step 2"}
+            )
+            client.put_item(
+                {"goal_id": "goal-2", "milestone_id": "milestone-3", "title": "Step 3"}
+            )
 
             results = client.query("goal_id", "goal-1")
             assert len(results) == 2

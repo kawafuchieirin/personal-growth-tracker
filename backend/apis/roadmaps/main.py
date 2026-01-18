@@ -1,13 +1,14 @@
 """Roadmaps API Lambda entrypoint."""
 
 import logging
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from mangum import Mangum
 
-from client import get_settings
 from api_handler import router
+from client import get_settings
 
 logger = logging.getLogger(__name__)
 settings = get_settings()

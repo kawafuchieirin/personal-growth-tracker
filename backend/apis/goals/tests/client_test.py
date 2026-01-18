@@ -1,8 +1,9 @@
 """Tests for Goals API DynamoDB client."""
 
-import pytest
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
+
 import boto3
+import pytest
 from moto import mock_aws
 
 
@@ -37,7 +38,9 @@ class TestGoalsClient:
 
         with patch("client.get_settings") as mock_settings:
             mock_settings.return_value.aws_region = "ap-northeast-1"
-            mock_settings.return_value.goals_table_name = "personal-growth-tracker-goals"
+            mock_settings.return_value.goals_table_name = (
+                "personal-growth-tracker-goals"
+            )
 
             client = GoalsClient()
             item = {
@@ -57,7 +60,9 @@ class TestGoalsClient:
 
         with patch("client.get_settings") as mock_settings:
             mock_settings.return_value.aws_region = "ap-northeast-1"
-            mock_settings.return_value.goals_table_name = "personal-growth-tracker-goals"
+            mock_settings.return_value.goals_table_name = (
+                "personal-growth-tracker-goals"
+            )
 
             client = GoalsClient()
             item = {
@@ -78,12 +83,20 @@ class TestGoalsClient:
 
         with patch("client.get_settings") as mock_settings:
             mock_settings.return_value.aws_region = "ap-northeast-1"
-            mock_settings.return_value.goals_table_name = "personal-growth-tracker-goals"
+            mock_settings.return_value.goals_table_name = (
+                "personal-growth-tracker-goals"
+            )
 
             client = GoalsClient()
-            client.put_item({"user_id": "user-1", "goal_id": "goal-1", "title": "Goal 1"})
-            client.put_item({"user_id": "user-1", "goal_id": "goal-2", "title": "Goal 2"})
-            client.put_item({"user_id": "user-2", "goal_id": "goal-3", "title": "Goal 3"})
+            client.put_item(
+                {"user_id": "user-1", "goal_id": "goal-1", "title": "Goal 1"}
+            )
+            client.put_item(
+                {"user_id": "user-1", "goal_id": "goal-2", "title": "Goal 2"}
+            )
+            client.put_item(
+                {"user_id": "user-2", "goal_id": "goal-3", "title": "Goal 3"}
+            )
 
             results = client.query("user_id", "user-1")
             assert len(results) == 2

@@ -2,8 +2,9 @@
 """Generate OpenAPI specification for Skills API."""
 
 import json
-import yaml
 from pathlib import Path
+
+import yaml
 
 from main import app
 

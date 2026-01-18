@@ -1,10 +1,10 @@
 """DynamoDB client for Goals API."""
 
+from functools import lru_cache
 from typing import Any
+
 import boto3
 from boto3.dynamodb.conditions import Key
-from functools import lru_cache
-
 from pydantic_settings import BaseSettings
 
 
@@ -51,9 +51,7 @@ class GoalsClient:
 
     def query(self, key_name: str, key_value: str) -> list[dict[str, Any]]:
         """Query items by partition key."""
-        response = self._table.query(
-            KeyConditionExpression=Key(key_name).eq(key_value)
-        )
+        response = self._table.query(KeyConditionExpression=Key(key_name).eq(key_value))
         return response.get("Items", [])
 
     def scan(self) -> list[dict[str, Any]]:

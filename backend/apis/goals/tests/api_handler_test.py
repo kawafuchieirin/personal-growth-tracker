@@ -1,7 +1,8 @@
 """Tests for Goals API handler."""
 
+from unittest.mock import patch
+
 import pytest
-from unittest.mock import MagicMock, patch
 from fastapi.testclient import TestClient
 
 
@@ -16,6 +17,7 @@ def mock_dynamodb():
 def client(mock_dynamodb):
     """Create test client."""
     from main import app
+
     return TestClient(app)
 
 

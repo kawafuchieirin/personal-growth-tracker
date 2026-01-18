@@ -1,12 +1,12 @@
 """Goals API handler."""
 
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from fastapi import APIRouter, HTTPException
 
 from client import GoalsClient, get_settings
-from models import GoalCreate, GoalUpdate, GoalResponse
+from models import GoalCreate, GoalResponse, GoalUpdate
 
 router = APIRouter(prefix="/goals", tags=["goals"])
 
@@ -34,7 +34,7 @@ async def get_goal(goal_id: str, user_id: str) -> GoalResponse:
 async def create_goal(user_id: str, goal: GoalCreate) -> GoalResponse:
     """Create a new goal."""
     goal_id = str(uuid.uuid4())
-    now = datetime.now(timezone.utc).isoformat()
+    now = datetime.now(UTC).isoformat()
 
     item = {
         "user_id": user_id,
@@ -55,7 +55,7 @@ async def update_goal(goal_id: str, user_id: str, goal: GoalUpdate) -> GoalRespo
         raise HTTPException(status_code=404, detail="Goal not found")
 
     update_data = goal.model_dump(exclude_unset=True)
-    update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    update_data["updated_at"] = datetime.now(UTC).isoformat()
 
     updated_item = {**existing, **update_data}
     db.put_item(updated_item)

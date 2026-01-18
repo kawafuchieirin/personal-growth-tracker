@@ -1,8 +1,9 @@
 """Tests for Skills API DynamoDB client."""
 
-import pytest
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
+
 import boto3
+import pytest
 from moto import mock_aws
 
 
@@ -37,7 +38,9 @@ class TestSkillsClient:
 
         with patch("client.get_settings") as mock_settings:
             mock_settings.return_value.aws_region = "ap-northeast-1"
-            mock_settings.return_value.skills_table_name = "personal-growth-tracker-skills"
+            mock_settings.return_value.skills_table_name = (
+                "personal-growth-tracker-skills"
+            )
 
             client = SkillsClient()
             item = {
@@ -57,7 +60,9 @@ class TestSkillsClient:
 
         with patch("client.get_settings") as mock_settings:
             mock_settings.return_value.aws_region = "ap-northeast-1"
-            mock_settings.return_value.skills_table_name = "personal-growth-tracker-skills"
+            mock_settings.return_value.skills_table_name = (
+                "personal-growth-tracker-skills"
+            )
 
             client = SkillsClient()
             item = {
@@ -78,11 +83,17 @@ class TestSkillsClient:
 
         with patch("client.get_settings") as mock_settings:
             mock_settings.return_value.aws_region = "ap-northeast-1"
-            mock_settings.return_value.skills_table_name = "personal-growth-tracker-skills"
+            mock_settings.return_value.skills_table_name = (
+                "personal-growth-tracker-skills"
+            )
 
             client = SkillsClient()
-            client.put_item({"user_id": "user-1", "skill_id": "skill-1", "name": "Python"})
-            client.put_item({"user_id": "user-1", "skill_id": "skill-2", "name": "JavaScript"})
+            client.put_item(
+                {"user_id": "user-1", "skill_id": "skill-1", "name": "Python"}
+            )
+            client.put_item(
+                {"user_id": "user-1", "skill_id": "skill-2", "name": "JavaScript"}
+            )
             client.put_item({"user_id": "user-2", "skill_id": "skill-3", "name": "Go"})
 
             results = client.query("user_id", "user-1")

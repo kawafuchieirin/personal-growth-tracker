@@ -1,12 +1,12 @@
 """Roadmaps API handler."""
 
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from fastapi import APIRouter, HTTPException
 
 from client import RoadmapsClient, get_settings
-from models import RoadmapCreate, RoadmapUpdate, RoadmapResponse
+from models import RoadmapCreate, RoadmapResponse, RoadmapUpdate
 
 router = APIRouter(prefix="/roadmaps", tags=["roadmaps"])
 
@@ -34,7 +34,7 @@ async def get_roadmap(milestone_id: str, goal_id: str) -> RoadmapResponse:
 async def create_roadmap(goal_id: str, milestone: RoadmapCreate) -> RoadmapResponse:
     """Create a new milestone."""
     milestone_id = str(uuid.uuid4())
-    now = datetime.now(timezone.utc).isoformat()
+    now = datetime.now(UTC).isoformat()
 
     item = {
         "goal_id": goal_id,
@@ -57,7 +57,7 @@ async def update_roadmap(
         raise HTTPException(status_code=404, detail="Milestone not found")
 
     update_data = milestone.model_dump(exclude_unset=True)
-    update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    update_data["updated_at"] = datetime.now(UTC).isoformat()
 
     updated_item = {**existing, **update_data}
     db.put_item(updated_item)

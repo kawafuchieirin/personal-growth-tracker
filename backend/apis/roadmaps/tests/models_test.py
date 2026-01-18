@@ -3,7 +3,7 @@
 import pytest
 from pydantic import ValidationError
 
-from models import RoadmapCreate, RoadmapUpdate, RoadmapResponse, MilestoneStatus
+from models import MilestoneStatus, RoadmapCreate, RoadmapResponse, RoadmapUpdate
 
 
 class TestRoadmapCreate:

@@ -1,8 +1,9 @@
 """Tests for main module parameter compatibility."""
 
+from unittest.mock import patch
+
 import pytest
 from fastapi.testclient import TestClient
-from unittest.mock import patch, MagicMock
 
 
 @pytest.fixture
@@ -16,6 +17,7 @@ def mock_dynamodb():
 def client(mock_dynamodb):
     """Create test client."""
     from main import app
+
     return TestClient(app)
 
 

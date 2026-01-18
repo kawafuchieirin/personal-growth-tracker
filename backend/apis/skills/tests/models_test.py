@@ -3,7 +3,7 @@
 import pytest
 from pydantic import ValidationError
 
-from models import SkillCreate, SkillUpdate, SkillResponse
+from models import SkillCreate, SkillResponse, SkillUpdate
 
 
 class TestSkillCreate:

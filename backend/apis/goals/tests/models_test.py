@@ -3,7 +3,7 @@
 import pytest
 from pydantic import ValidationError
 
-from models import GoalCreate, GoalUpdate, GoalResponse, GoalStatus
+from models import GoalCreate, GoalResponse, GoalStatus, GoalUpdate
 
 
 class TestGoalCreate:
