@@ -1,6 +1,6 @@
-import { useRef, useEffect } from 'react';
-import type { Skill } from '@/types';
-import styles from './SkillChart.module.css';
+import { useRef, useEffect } from "react";
+import type { Skill } from "@/types";
+import styles from "./SkillChart.module.css";
 
 interface SkillChartProps {
   skills: Skill[];
@@ -24,7 +24,7 @@ export function SkillChart({ skills, size = 300 }: SkillChartProps) {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     const dpr = window.devicePixelRatio || 1;
@@ -37,10 +37,10 @@ export function SkillChart({ skills, size = 300 }: SkillChartProps) {
     ctx.clearRect(0, 0, size, size);
 
     if (data.length < 3) {
-      ctx.fillStyle = '#9ca3af';
-      ctx.font = '14px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('3つ以上のスキルが必要です', size / 2, size / 2);
+      ctx.fillStyle = "#9ca3af";
+      ctx.font = "14px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("3つ以上のスキルが必要です", size / 2, size / 2);
       return;
     }
 
@@ -53,7 +53,7 @@ export function SkillChart({ skills, size = 300 }: SkillChartProps) {
     const startAngle = -Math.PI / 2;
 
     // Draw background circles
-    ctx.strokeStyle = '#374151';
+    ctx.strokeStyle = "#374151";
     ctx.lineWidth = 1;
 
     for (let i = 1; i <= levels; i++) {
@@ -74,18 +74,21 @@ export function SkillChart({ skills, size = 300 }: SkillChartProps) {
     }
 
     // Draw axis lines
-    ctx.strokeStyle = '#4b5563';
+    ctx.strokeStyle = "#4b5563";
     data.forEach((_, i) => {
       const angle = startAngle + i * angleStep;
       ctx.beginPath();
       ctx.moveTo(centerX, centerY);
-      ctx.lineTo(centerX + radius * Math.cos(angle), centerY + radius * Math.sin(angle));
+      ctx.lineTo(
+        centerX + radius * Math.cos(angle),
+        centerY + radius * Math.sin(angle)
+      );
       ctx.stroke();
     });
 
     // Draw data polygon
-    ctx.fillStyle = 'rgba(59, 130, 246, 0.3)';
-    ctx.strokeStyle = '#3b82f6';
+    ctx.fillStyle = "rgba(59, 130, 246, 0.3)";
+    ctx.strokeStyle = "#3b82f6";
     ctx.lineWidth = 2;
 
     ctx.beginPath();
@@ -105,7 +108,7 @@ export function SkillChart({ skills, size = 300 }: SkillChartProps) {
     ctx.stroke();
 
     // Draw data points
-    ctx.fillStyle = '#3b82f6';
+    ctx.fillStyle = "#3b82f6";
     data.forEach((item, i) => {
       const angle = startAngle + i * angleStep;
       const valueRadius = (item.value / maxValue) * radius;
@@ -117,10 +120,10 @@ export function SkillChart({ skills, size = 300 }: SkillChartProps) {
     });
 
     // Draw labels
-    ctx.fillStyle = '#e5e7eb';
-    ctx.font = '12px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
+    ctx.fillStyle = "#e5e7eb";
+    ctx.font = "12px sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
 
     data.forEach((item, i) => {
       const angle = startAngle + i * angleStep;
@@ -132,7 +135,7 @@ export function SkillChart({ skills, size = 300 }: SkillChartProps) {
       const maxLength = 10;
       const label =
         item.label.length > maxLength
-          ? item.label.slice(0, maxLength) + '...'
+          ? item.label.slice(0, maxLength) + "..."
           : item.label;
 
       ctx.fillText(label, x, y);

@@ -1,12 +1,17 @@
-import { useState } from 'react';
-import { Button } from '@/components/common/Button';
-import { Modal } from '@/components/common/Modal';
-import { Card } from '@/components/common/Card';
-import { MilestoneCard } from '../MilestoneCard';
-import { MilestoneForm } from '../MilestoneForm';
-import { useRoadmaps } from '@/hooks/useRoadmaps';
-import type { Milestone, CreateMilestoneInput, UpdateMilestoneInput, MilestoneStatus } from '@/types';
-import styles from './MilestoneTimeline.module.css';
+import { useState } from "react";
+import { Button } from "@/components/common/Button";
+import { Modal } from "@/components/common/Modal";
+import { Card } from "@/components/common/Card";
+import { MilestoneCard } from "../MilestoneCard";
+import { MilestoneForm } from "../MilestoneForm";
+import { useRoadmaps } from "@/hooks/useRoadmaps";
+import type {
+  Milestone,
+  CreateMilestoneInput,
+  UpdateMilestoneInput,
+  MilestoneStatus,
+} from "@/types";
+import styles from "./MilestoneTimeline.module.css";
 
 interface MilestoneTimelineProps {
   goalId: string;
@@ -22,8 +27,12 @@ export function MilestoneTimeline({ goalId }: MilestoneTimelineProps) {
     deleteMilestone,
   } = useRoadmaps(goalId);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [editingMilestone, setEditingMilestone] = useState<Milestone | null>(null);
-  const [deletingMilestoneId, setDeletingMilestoneId] = useState<string | null>(null);
+  const [editingMilestone, setEditingMilestone] = useState<Milestone | null>(
+    null
+  );
+  const [deletingMilestoneId, setDeletingMilestoneId] = useState<string | null>(
+    null
+  );
   const [saving, setSaving] = useState(false);
 
   const handleCreate = async (data: CreateMilestoneInput) => {
@@ -58,14 +67,20 @@ export function MilestoneTimeline({ goalId }: MilestoneTimelineProps) {
     }
   };
 
-  const handleStatusChange = async (milestoneId: string, status: MilestoneStatus) => {
+  const handleStatusChange = async (
+    milestoneId: string,
+    status: MilestoneStatus
+  ) => {
     await updateMilestone(milestoneId, { status });
   };
 
-  const completedCount = milestones.filter((m) => m.status === 'completed').length;
-  const progressPercentage = milestones.length > 0
-    ? Math.round((completedCount / milestones.length) * 100)
-    : 0;
+  const completedCount = milestones.filter(
+    (m) => m.status === "completed"
+  ).length;
+  const progressPercentage =
+    milestones.length > 0
+      ? Math.round((completedCount / milestones.length) * 100)
+      : 0;
 
   if (loading) {
     return (
@@ -112,10 +127,12 @@ export function MilestoneTimeline({ goalId }: MilestoneTimelineProps) {
               <div className={styles.connector}>
                 <div
                   className={`${styles.dot} ${
-                    milestone.status === 'completed' ? styles.completed : ''
+                    milestone.status === "completed" ? styles.completed : ""
                   }`}
                 />
-                {index < milestones.length - 1 && <div className={styles.line} />}
+                {index < milestones.length - 1 && (
+                  <div className={styles.line} />
+                )}
               </div>
               <div className={styles.cardWrapper}>
                 <MilestoneCard
@@ -167,7 +184,10 @@ export function MilestoneTimeline({ goalId }: MilestoneTimelineProps) {
         <div className={styles.deleteConfirm}>
           <p>このマイルストーンを削除しますか？</p>
           <div className={styles.deleteActions}>
-            <Button variant="secondary" onClick={() => setDeletingMilestoneId(null)}>
+            <Button
+              variant="secondary"
+              onClick={() => setDeletingMilestoneId(null)}
+            >
               キャンセル
             </Button>
             <Button variant="danger" onClick={handleDelete} loading={saving}>

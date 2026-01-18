@@ -1,11 +1,11 @@
-import { useState, useMemo } from 'react';
-import { Button } from '@/components/common/Button';
-import { Select } from '@/components/common/Select';
-import { Modal } from '@/components/common/Modal';
-import { SkillCard, SkillForm, SkillChart } from '@/components/features/skills';
-import { useSkills } from '@/hooks/useSkills';
-import type { Skill, CreateSkillInput, UpdateSkillInput } from '@/types';
-import styles from './Skills.module.css';
+import { useState, useMemo } from "react";
+import { Button } from "@/components/common/Button";
+import { Select } from "@/components/common/Select";
+import { Modal } from "@/components/common/Modal";
+import { SkillCard, SkillForm, SkillChart } from "@/components/features/skills";
+import { useSkills } from "@/hooks/useSkills";
+import type { Skill, CreateSkillInput, UpdateSkillInput } from "@/types";
+import styles from "./Skills.module.css";
 
 export function SkillsPage() {
   const {
@@ -21,19 +21,19 @@ export function SkillsPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [editingSkill, setEditingSkill] = useState<Skill | null>(null);
   const [deletingSkillId, setDeletingSkillId] = useState<string | null>(null);
-  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [categoryFilter, setCategoryFilter] = useState("all");
   const [saving, setSaving] = useState(false);
 
   const categoryOptions = useMemo(
     () => [
-      { value: 'all', label: 'すべてのカテゴリ' },
+      { value: "all", label: "すべてのカテゴリ" },
       ...categories.map((cat) => ({ value: cat, label: cat })),
     ],
     [categories]
   );
 
   const filteredSkills = useMemo(() => {
-    if (categoryFilter === 'all') return skills;
+    if (categoryFilter === "all") return skills;
     return skills.filter((skill) => skill.category === categoryFilter);
   }, [skills, categoryFilter]);
 
@@ -110,7 +110,9 @@ export function SkillsPage() {
               <div className={styles.summaryItem}>
                 <span className={styles.summaryLabel}>平均レベル</span>
                 <span className={styles.summaryValue}>
-                  {(skills.reduce((sum, s) => sum + s.level, 0) / skills.length).toFixed(1)}
+                  {(
+                    skills.reduce((sum, s) => sum + s.level, 0) / skills.length
+                  ).toFixed(1)}
                 </span>
               </div>
             </div>
@@ -134,7 +136,7 @@ export function SkillsPage() {
             最初のスキルを追加
           </Button>
         </div>
-      ) : categoryFilter === 'all' && categories.length > 1 ? (
+      ) : categoryFilter === "all" && categories.length > 1 ? (
         <div className={styles.categoryList}>
           {categories.map((category) => (
             <div key={category} className={styles.categorySection}>
@@ -204,7 +206,10 @@ export function SkillsPage() {
         <div className={styles.deleteConfirm}>
           <p>このスキルを削除しますか？</p>
           <div className={styles.deleteActions}>
-            <Button variant="secondary" onClick={() => setDeletingSkillId(null)}>
+            <Button
+              variant="secondary"
+              onClick={() => setDeletingSkillId(null)}
+            >
               キャンセル
             </Button>
             <Button variant="danger" onClick={handleDelete} loading={saving}>

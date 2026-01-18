@@ -1,10 +1,15 @@
-import { useState, type FormEvent } from 'react';
-import { Button } from '@/components/common/Button';
-import { Input, Textarea } from '@/components/common/Input';
-import { Select } from '@/components/common/Select';
-import type { Skill, CreateSkillInput, UpdateSkillInput, SkillLevel } from '@/types';
-import { SKILL_LEVEL_LABELS, DEFAULT_CATEGORIES } from '@/types';
-import styles from './SkillForm.module.css';
+import { useState, type FormEvent } from "react";
+import { Button } from "@/components/common/Button";
+import { Input, Textarea } from "@/components/common/Input";
+import { Select } from "@/components/common/Select";
+import type {
+  Skill,
+  CreateSkillInput,
+  UpdateSkillInput,
+  SkillLevel,
+} from "@/types";
+import { SKILL_LEVEL_LABELS, DEFAULT_CATEGORIES } from "@/types";
+import styles from "./SkillForm.module.css";
 
 interface SkillFormBaseProps {
   existingCategories?: string[];
@@ -24,9 +29,9 @@ interface EditSkillFormProps extends SkillFormBaseProps {
 
 type SkillFormProps = CreateSkillFormProps | EditSkillFormProps;
 
-const levelOptions = (Object.entries(SKILL_LEVEL_LABELS) as [string, string][]).map(
-  ([value, label]) => ({ value, label: `${value} - ${label}` })
-);
+const levelOptions = (
+  Object.entries(SKILL_LEVEL_LABELS) as [string, string][]
+).map(([value, label]) => ({ value, label: `${value} - ${label}` }));
 
 export function SkillForm({
   skill,
@@ -35,11 +40,11 @@ export function SkillForm({
   onCancel,
   loading = false,
 }: SkillFormProps) {
-  const [name, setName] = useState(skill?.name || '');
-  const [category, setCategory] = useState(skill?.category || '');
-  const [customCategory, setCustomCategory] = useState('');
+  const [name, setName] = useState(skill?.name || "");
+  const [category, setCategory] = useState(skill?.category || "");
+  const [customCategory, setCustomCategory] = useState("");
   const [level, setLevel] = useState<SkillLevel>(skill?.level || 1);
-  const [description, setDescription] = useState(skill?.description || '');
+  const [description, setDescription] = useState(skill?.description || "");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const isEditing = !!skill;
@@ -49,17 +54,17 @@ export function SkillForm({
 
   const categoryOptions = [
     ...allCategories.map((cat) => ({ value: cat, label: cat })),
-    { value: '__custom__', label: 'その他（カスタム）' },
+    { value: "__custom__", label: "その他（カスタム）" },
   ];
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
 
     if (!name.trim()) {
-      newErrors.name = 'スキル名は必須です';
+      newErrors.name = "スキル名は必須です";
     }
     if (!category && !customCategory.trim()) {
-      newErrors.category = 'カテゴリは必須です';
+      newErrors.category = "カテゴリは必須です";
     }
 
     setErrors(newErrors);
@@ -71,7 +76,7 @@ export function SkillForm({
     if (!validate()) return;
 
     const finalCategory =
-      category === '__custom__' ? customCategory.trim() : category;
+      category === "__custom__" ? customCategory.trim() : category;
 
     await onSubmit({
       name: name.trim(),
@@ -101,7 +106,7 @@ export function SkillForm({
         error={errors.category}
         fullWidth
       />
-      {category === '__custom__' && (
+      {category === "__custom__" && (
         <Input
           label="カスタムカテゴリ"
           value={customCategory}
@@ -129,7 +134,7 @@ export function SkillForm({
           キャンセル
         </Button>
         <Button type="submit" loading={loading}>
-          {isEditing ? '更新' : '追加'}
+          {isEditing ? "更新" : "追加"}
         </Button>
       </div>
     </form>

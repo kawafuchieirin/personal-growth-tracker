@@ -1,7 +1,7 @@
-import styles from './ProgressBar.module.css';
+import styles from "./ProgressBar.module.css";
 
-type ProgressBarSize = 'sm' | 'md' | 'lg';
-type ProgressBarVariant = 'primary' | 'success' | 'warning' | 'error';
+type ProgressBarSize = "sm" | "md" | "lg";
+type ProgressBarVariant = "primary" | "success" | "warning" | "error";
 
 interface ProgressBarProps {
   value: number;
@@ -15,16 +15,16 @@ interface ProgressBarProps {
 export function ProgressBar({
   value,
   max = 100,
-  size = 'md',
-  variant = 'primary',
+  size = "md",
+  variant = "primary",
   showLabel = false,
-  className = '',
+  className = "",
 }: ProgressBarProps) {
   const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
 
   const classNames = [styles.wrapper, styles[size], className]
     .filter(Boolean)
-    .join(' ');
+    .join(" ");
 
   return (
     <div className={classNames}>

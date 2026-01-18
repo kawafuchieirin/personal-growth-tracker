@@ -1,5 +1,5 @@
-import { apiClient } from './api';
-import type { Skill, CreateSkillInput, UpdateSkillInput } from '@/types';
+import { apiClient } from "./api";
+import type { Skill, CreateSkillInput, UpdateSkillInput } from "@/types";
 
 export const skillsService = {
   async getAll(userId: string): Promise<Skill[]> {
@@ -11,7 +11,7 @@ export const skillsService = {
   },
 
   async create(userId: string, data: CreateSkillInput): Promise<Skill> {
-    return apiClient.post<Skill>('/skills', { ...data, user_id: userId });
+    return apiClient.post<Skill>("/skills", { ...data, user_id: userId });
   },
 
   async update(skillId: string, data: UpdateSkillInput): Promise<Skill> {

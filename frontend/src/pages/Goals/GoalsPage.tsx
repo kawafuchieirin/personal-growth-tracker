@@ -1,40 +1,45 @@
-import { useState, useMemo } from 'react';
-import { Button } from '@/components/common/Button';
-import { Select } from '@/components/common/Select';
-import { Modal } from '@/components/common/Modal';
-import { GoalCard, GoalForm } from '@/components/features/goals';
-import { useGoals } from '@/hooks';
-import type { CreateGoalInput, GoalStatus, GoalPriority } from '@/types';
-import { GOAL_STATUS_LABELS, GOAL_PRIORITY_LABELS } from '@/types';
-import styles from './Goals.module.css';
+import { useState, useMemo } from "react";
+import { Button } from "@/components/common/Button";
+import { Select } from "@/components/common/Select";
+import { Modal } from "@/components/common/Modal";
+import { GoalCard, GoalForm } from "@/components/features/goals";
+import { useGoals } from "@/hooks";
+import type { CreateGoalInput, GoalStatus, GoalPriority } from "@/types";
+import { GOAL_STATUS_LABELS, GOAL_PRIORITY_LABELS } from "@/types";
+import styles from "./Goals.module.css";
 
 const statusFilterOptions = [
-  { value: 'all', label: 'すべて' },
-  ...(Object.entries(GOAL_STATUS_LABELS) as [GoalStatus, string][]).map(([value, label]) => ({
-    value,
-    label,
-  })),
+  { value: "all", label: "すべて" },
+  ...(Object.entries(GOAL_STATUS_LABELS) as [GoalStatus, string][]).map(
+    ([value, label]) => ({
+      value,
+      label,
+    })
+  ),
 ];
 
 const priorityFilterOptions = [
-  { value: 'all', label: 'すべて' },
-  ...(Object.entries(GOAL_PRIORITY_LABELS) as [GoalPriority, string][]).map(([value, label]) => ({
-    value,
-    label,
-  })),
+  { value: "all", label: "すべて" },
+  ...(Object.entries(GOAL_PRIORITY_LABELS) as [GoalPriority, string][]).map(
+    ([value, label]) => ({
+      value,
+      label,
+    })
+  ),
 ];
 
 export function GoalsPage() {
   const { goals, loading, error, createGoal } = useGoals();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [creating, setCreating] = useState(false);
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [priorityFilter, setPriorityFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [priorityFilter, setPriorityFilter] = useState("all");
 
   const filteredGoals = useMemo(() => {
     return goals.filter((goal) => {
-      if (statusFilter !== 'all' && goal.status !== statusFilter) return false;
-      if (priorityFilter !== 'all' && goal.priority !== priorityFilter) return false;
+      if (statusFilter !== "all" && goal.status !== statusFilter) return false;
+      if (priorityFilter !== "all" && goal.priority !== priorityFilter)
+        return false;
       return true;
     });
   }, [goals, statusFilter, priorityFilter]);

@@ -1,8 +1,8 @@
-import { Routes, Route } from 'react-router-dom';
-import { Layout } from '@/components/layout';
-import { Dashboard } from '@/pages/Dashboard';
-import { GoalsPage, GoalDetailPage } from '@/pages/Goals';
-import { SkillsPage } from '@/pages/Skills';
+import { Routes, Route } from "react-router-dom";
+import { Layout } from "@/components/layout";
+import { Dashboard } from "@/pages/Dashboard";
+import { GoalsPage, GoalDetailPage } from "@/pages/Goals";
+import { SkillsPage } from "@/pages/Skills";
 
 function App() {
   return (

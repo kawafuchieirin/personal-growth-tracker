@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
-import { goalsService } from '@/services';
-import { useUser } from '@/contexts';
-import type { Goal, CreateGoalInput, UpdateGoalInput } from '@/types';
+import { useState, useEffect, useCallback } from "react";
+import { goalsService } from "@/services";
+import { useUser } from "@/contexts";
+import type { Goal, CreateGoalInput, UpdateGoalInput } from "@/types";
 
 export function useGoals() {
   const { user } = useUser();
@@ -16,7 +16,7 @@ export function useGoals() {
       const data = await goalsService.getAll(user.id);
       setGoals(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch goals');
+      setError(err instanceof Error ? err.message : "Failed to fetch goals");
     } finally {
       setLoading(false);
     }
@@ -35,13 +35,16 @@ export function useGoals() {
     [user.id]
   );
 
-  const updateGoal = useCallback(async (goalId: string, data: UpdateGoalInput) => {
-    const updatedGoal = await goalsService.update(goalId, data);
-    setGoals((prev) =>
-      prev.map((goal) => (goal.goal_id === goalId ? updatedGoal : goal))
-    );
-    return updatedGoal;
-  }, []);
+  const updateGoal = useCallback(
+    async (goalId: string, data: UpdateGoalInput) => {
+      const updatedGoal = await goalsService.update(goalId, data);
+      setGoals((prev) =>
+        prev.map((goal) => (goal.goal_id === goalId ? updatedGoal : goal))
+      );
+      return updatedGoal;
+    },
+    []
+  );
 
   const deleteGoal = useCallback(async (goalId: string) => {
     await goalsService.delete(goalId);
@@ -76,7 +79,7 @@ export function useGoal(goalId: string | undefined) {
       const data = await goalsService.getById(goalId);
       setGoal(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch goal');
+      setError(err instanceof Error ? err.message : "Failed to fetch goal");
     } finally {
       setLoading(false);
     }

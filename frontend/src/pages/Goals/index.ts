@@ -1,2 +1,2 @@
-export { GoalsPage } from './GoalsPage';
-export { GoalDetailPage } from './GoalDetailPage';
+export { GoalsPage } from "./GoalsPage";
+export { GoalDetailPage } from "./GoalDetailPage";

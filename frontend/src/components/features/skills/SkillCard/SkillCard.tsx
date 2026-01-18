@@ -1,9 +1,9 @@
-import { Card } from '@/components/common/Card';
-import { Badge } from '@/components/common/Badge';
-import { Button } from '@/components/common/Button';
-import type { Skill } from '@/types';
-import { SKILL_LEVEL_LABELS } from '@/types';
-import styles from './SkillCard.module.css';
+import { Card } from "@/components/common/Card";
+import { Badge } from "@/components/common/Badge";
+import { Button } from "@/components/common/Button";
+import type { Skill } from "@/types";
+import { SKILL_LEVEL_LABELS } from "@/types";
+import styles from "./SkillCard.module.css";
 
 interface SkillCardProps {
   skill: Skill;
@@ -12,10 +12,10 @@ interface SkillCardProps {
 }
 
 function getLevelVariant(level: number) {
-  if (level >= 5) return 'success';
-  if (level >= 3) return 'primary';
-  if (level >= 2) return 'warning';
-  return 'default';
+  if (level >= 5) return "success";
+  if (level >= 3) return "primary";
+  if (level >= 2) return "warning";
+  return "default";
 }
 
 export function SkillCard({ skill, onEdit, onDelete }: SkillCardProps) {
@@ -31,7 +31,7 @@ export function SkillCard({ skill, onEdit, onDelete }: SkillCardProps) {
         {[1, 2, 3, 4, 5].map((level) => (
           <div
             key={level}
-            className={`${styles.levelDot} ${level <= skill.level ? styles.filled : ''}`}
+            className={`${styles.levelDot} ${level <= skill.level ? styles.filled : ""}`}
           />
         ))}
       </div>
@@ -46,7 +46,11 @@ export function SkillCard({ skill, onEdit, onDelete }: SkillCardProps) {
           <Button variant="ghost" size="sm" onClick={() => onEdit(skill)}>
             編集
           </Button>
-          <Button variant="ghost" size="sm" onClick={() => onDelete(skill.skill_id)}>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => onDelete(skill.skill_id)}
+          >
             削除
           </Button>
         </div>

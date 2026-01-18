@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
-import { useUser } from '@/contexts';
-import styles from './Header.module.css';
+import { Link } from "react-router-dom";
+import { useUser } from "@/contexts";
+import styles from "./Header.module.css";
 
 interface HeaderProps {
   onMenuClick?: () => void;

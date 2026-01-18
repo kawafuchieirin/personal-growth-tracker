@@ -1,9 +1,13 @@
-import { useState, type FormEvent } from 'react';
-import { Button } from '@/components/common/Button';
-import { Input, Textarea } from '@/components/common/Input';
-import type { Milestone, CreateMilestoneInput, UpdateMilestoneInput } from '@/types';
-import { formatDateInput } from '@/utils';
-import styles from './MilestoneForm.module.css';
+import { useState, type FormEvent } from "react";
+import { Button } from "@/components/common/Button";
+import { Input, Textarea } from "@/components/common/Input";
+import type {
+  Milestone,
+  CreateMilestoneInput,
+  UpdateMilestoneInput,
+} from "@/types";
+import { formatDateInput } from "@/utils";
+import styles from "./MilestoneForm.module.css";
 
 interface MilestoneFormBaseProps {
   onCancel: () => void;
@@ -28,10 +32,10 @@ export function MilestoneForm({
   onCancel,
   loading = false,
 }: MilestoneFormProps) {
-  const [title, setTitle] = useState(milestone?.title || '');
-  const [description, setDescription] = useState(milestone?.description || '');
+  const [title, setTitle] = useState(milestone?.title || "");
+  const [description, setDescription] = useState(milestone?.description || "");
   const [dueDate, setDueDate] = useState(
-    milestone?.due_date ? formatDateInput(milestone.due_date) : ''
+    milestone?.due_date ? formatDateInput(milestone.due_date) : ""
   );
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -41,10 +45,10 @@ export function MilestoneForm({
     const newErrors: Record<string, string> = {};
 
     if (!title.trim()) {
-      newErrors.title = 'タイトルは必須です';
+      newErrors.title = "タイトルは必須です";
     }
     if (!dueDate) {
-      newErrors.dueDate = '期限は必須です';
+      newErrors.dueDate = "期限は必須です";
     }
 
     setErrors(newErrors);
@@ -94,7 +98,7 @@ export function MilestoneForm({
           キャンセル
         </Button>
         <Button type="submit" loading={loading}>
-          {isEditing ? '更新' : '追加'}
+          {isEditing ? "更新" : "追加"}
         </Button>
       </div>
     </form>

@@ -1,39 +1,39 @@
-import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Button } from '@/components/common/Button';
-import { Card } from '@/components/common/Card';
-import { Badge } from '@/components/common/Badge';
-import { ProgressBar } from '@/components/common/ProgressBar';
-import { Modal } from '@/components/common/Modal';
-import { GoalForm } from '@/components/features/goals';
-import { MilestoneTimeline } from '@/components/features/roadmaps';
-import { useGoal } from '@/hooks';
-import { formatDate } from '@/utils';
-import type { UpdateGoalInput, GoalStatus, GoalPriority } from '@/types';
-import { GOAL_STATUS_LABELS, GOAL_PRIORITY_LABELS } from '@/types';
-import styles from './Goals.module.css';
+import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Button } from "@/components/common/Button";
+import { Card } from "@/components/common/Card";
+import { Badge } from "@/components/common/Badge";
+import { ProgressBar } from "@/components/common/ProgressBar";
+import { Modal } from "@/components/common/Modal";
+import { GoalForm } from "@/components/features/goals";
+import { MilestoneTimeline } from "@/components/features/roadmaps";
+import { useGoal } from "@/hooks";
+import { formatDate } from "@/utils";
+import type { UpdateGoalInput, GoalStatus, GoalPriority } from "@/types";
+import { GOAL_STATUS_LABELS, GOAL_PRIORITY_LABELS } from "@/types";
+import styles from "./Goals.module.css";
 
 function getStatusVariant(status: GoalStatus) {
   switch (status) {
-    case 'completed':
-      return 'success';
-    case 'in_progress':
-      return 'primary';
-    case 'on_hold':
-      return 'warning';
+    case "completed":
+      return "success";
+    case "in_progress":
+      return "primary";
+    case "on_hold":
+      return "warning";
     default:
-      return 'default';
+      return "default";
   }
 }
 
 function getPriorityVariant(priority: GoalPriority) {
   switch (priority) {
-    case 'high':
-      return 'error';
-    case 'medium':
-      return 'warning';
+    case "high":
+      return "error";
+    case "medium":
+      return "warning";
     default:
-      return 'default';
+      return "default";
   }
 }
 
@@ -60,7 +60,7 @@ export function GoalDetailPage() {
     setDeleting(true);
     try {
       await deleteGoal();
-      navigate('/goals');
+      navigate("/goals");
     } finally {
       setDeleting(false);
     }
@@ -78,8 +78,8 @@ export function GoalDetailPage() {
   if (error || !goal) {
     return (
       <div className={styles.error}>
-        <p>{error || '目標が見つかりません'}</p>
-        <Button onClick={() => navigate('/goals')}>目標一覧に戻る</Button>
+        <p>{error || "目標が見つかりません"}</p>
+        <Button onClick={() => navigate("/goals")}>目標一覧に戻る</Button>
       </div>
     );
   }
@@ -87,7 +87,7 @@ export function GoalDetailPage() {
   return (
     <div className={styles.container}>
       <div className={styles.backLink}>
-        <Button variant="ghost" onClick={() => navigate('/goals')}>
+        <Button variant="ghost" onClick={() => navigate("/goals")}>
           ← 目標一覧
         </Button>
       </div>
@@ -106,7 +106,10 @@ export function GoalDetailPage() {
             </div>
           </div>
           <div className={styles.actions}>
-            <Button variant="secondary" onClick={() => setIsEditModalOpen(true)}>
+            <Button
+              variant="secondary"
+              onClick={() => setIsEditModalOpen(true)}
+            >
               編集
             </Button>
             <Button variant="danger" onClick={() => setIsDeleteModalOpen(true)}>
@@ -125,7 +128,7 @@ export function GoalDetailPage() {
             <h3>進捗</h3>
             <ProgressBar
               value={goal.progress}
-              variant={goal.status === 'completed' ? 'success' : 'primary'}
+              variant={goal.status === "completed" ? "success" : "primary"}
               size="lg"
               showLabel
             />
@@ -134,15 +137,21 @@ export function GoalDetailPage() {
           <div className={styles.metaGrid}>
             <div className={styles.metaItem}>
               <span className={styles.metaLabel}>期限</span>
-              <span className={styles.metaValue}>{formatDate(goal.target_date)}</span>
+              <span className={styles.metaValue}>
+                {formatDate(goal.target_date)}
+              </span>
             </div>
             <div className={styles.metaItem}>
               <span className={styles.metaLabel}>作成日</span>
-              <span className={styles.metaValue}>{formatDate(goal.created_at)}</span>
+              <span className={styles.metaValue}>
+                {formatDate(goal.created_at)}
+              </span>
             </div>
             <div className={styles.metaItem}>
               <span className={styles.metaLabel}>更新日</span>
-              <span className={styles.metaValue}>{formatDate(goal.updated_at)}</span>
+              <span className={styles.metaValue}>
+                {formatDate(goal.updated_at)}
+              </span>
             </div>
           </div>
         </div>
@@ -176,7 +185,10 @@ export function GoalDetailPage() {
           <p>「{goal.title}」を削除しますか？</p>
           <p className={styles.deleteWarning}>この操作は取り消せません。</p>
           <div className={styles.deleteActions}>
-            <Button variant="secondary" onClick={() => setIsDeleteModalOpen(false)}>
+            <Button
+              variant="secondary"
+              onClick={() => setIsDeleteModalOpen(false)}
+            >
               キャンセル
             </Button>
             <Button variant="danger" onClick={handleDelete} loading={deleting}>

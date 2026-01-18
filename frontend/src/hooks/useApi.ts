@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
-import type { AsyncState } from '@/types';
+import { useState, useCallback } from "react";
+import type { AsyncState } from "@/types";
 
 export function useApi<T, Args extends unknown[]>(
   apiFunction: (...args: Args) => Promise<T>
@@ -18,7 +18,8 @@ export function useApi<T, Args extends unknown[]>(
         setState({ data, loading: false, error: null });
         return data;
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : 'An error occurred';
+        const errorMessage =
+          error instanceof Error ? error.message : "An error occurred";
         setState({ data: null, loading: false, error: errorMessage });
         return null;
       }

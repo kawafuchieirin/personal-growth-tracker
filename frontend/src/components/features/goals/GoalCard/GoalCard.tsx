@@ -1,11 +1,11 @@
-import { Link } from 'react-router-dom';
-import { Card } from '@/components/common/Card';
-import { Badge } from '@/components/common/Badge';
-import { ProgressBar } from '@/components/common/ProgressBar';
-import { formatDate, getDaysRemaining } from '@/utils';
-import type { Goal, GoalStatus, GoalPriority } from '@/types';
-import { GOAL_STATUS_LABELS, GOAL_PRIORITY_LABELS } from '@/types';
-import styles from './GoalCard.module.css';
+import { Link } from "react-router-dom";
+import { Card } from "@/components/common/Card";
+import { Badge } from "@/components/common/Badge";
+import { ProgressBar } from "@/components/common/ProgressBar";
+import { formatDate, getDaysRemaining } from "@/utils";
+import type { Goal, GoalStatus, GoalPriority } from "@/types";
+import { GOAL_STATUS_LABELS, GOAL_PRIORITY_LABELS } from "@/types";
+import styles from "./GoalCard.module.css";
 
 interface GoalCardProps {
   goal: Goal;
@@ -13,31 +13,31 @@ interface GoalCardProps {
 
 function getStatusVariant(status: GoalStatus) {
   switch (status) {
-    case 'completed':
-      return 'success';
-    case 'in_progress':
-      return 'primary';
-    case 'on_hold':
-      return 'warning';
+    case "completed":
+      return "success";
+    case "in_progress":
+      return "primary";
+    case "on_hold":
+      return "warning";
     default:
-      return 'default';
+      return "default";
   }
 }
 
 function getPriorityVariant(priority: GoalPriority) {
   switch (priority) {
-    case 'high':
-      return 'error';
-    case 'medium':
-      return 'warning';
+    case "high":
+      return "error";
+    case "medium":
+      return "warning";
     default:
-      return 'default';
+      return "default";
   }
 }
 
 export function GoalCard({ goal }: GoalCardProps) {
   const daysRemaining = getDaysRemaining(goal.target_date);
-  const isOverdue = daysRemaining < 0 && goal.status !== 'completed';
+  const isOverdue = daysRemaining < 0 && goal.status !== "completed";
 
   return (
     <Link to={`/goals/${goal.goal_id}`} className={styles.link}>
@@ -52,7 +52,7 @@ export function GoalCard({ goal }: GoalCardProps) {
         <div className={styles.progress}>
           <ProgressBar
             value={goal.progress}
-            variant={goal.status === 'completed' ? 'success' : 'primary'}
+            variant={goal.status === "completed" ? "success" : "primary"}
             showLabel
           />
         </div>
@@ -60,10 +60,10 @@ export function GoalCard({ goal }: GoalCardProps) {
           <Badge variant={getStatusVariant(goal.status)}>
             {GOAL_STATUS_LABELS[goal.status]}
           </Badge>
-          <span className={`${styles.date} ${isOverdue ? styles.overdue : ''}`}>
+          <span className={`${styles.date} ${isOverdue ? styles.overdue : ""}`}>
             {isOverdue
               ? `${Math.abs(daysRemaining)}日超過`
-              : goal.status === 'completed'
+              : goal.status === "completed"
                 ? `完了: ${formatDate(goal.updated_at)}`
                 : `期限: ${formatDate(goal.target_date)}`}
           </span>

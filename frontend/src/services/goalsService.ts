@@ -1,5 +1,5 @@
-import { apiClient } from './api';
-import type { Goal, CreateGoalInput, UpdateGoalInput } from '@/types';
+import { apiClient } from "./api";
+import type { Goal, CreateGoalInput, UpdateGoalInput } from "@/types";
 
 export const goalsService = {
   async getAll(userId: string): Promise<Goal[]> {
@@ -11,7 +11,7 @@ export const goalsService = {
   },
 
   async create(userId: string, data: CreateGoalInput): Promise<Goal> {
-    return apiClient.post<Goal>('/goals', { ...data, user_id: userId });
+    return apiClient.post<Goal>("/goals", { ...data, user_id: userId });
   },
 
   async update(goalId: string, data: UpdateGoalInput): Promise<Goal> {

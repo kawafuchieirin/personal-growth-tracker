@@ -1,7 +1,7 @@
-import { useState, type ReactNode } from 'react';
-import { Header } from '../Header';
-import { Sidebar } from '../Sidebar';
-import styles from './Layout.module.css';
+import { useState, type ReactNode } from "react";
+import { Header } from "../Header";
+import { Sidebar } from "../Sidebar";
+import styles from "./Layout.module.css";
 
 interface LayoutProps {
   children: ReactNode;

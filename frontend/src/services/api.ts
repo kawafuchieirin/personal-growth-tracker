@@ -1,6 +1,6 @@
-import type { ApiError } from '@/types';
+import type { ApiError } from "@/types";
 
-const API_BASE_URL = '/api';
+const API_BASE_URL = "/api";
 
 class ApiClient {
   private baseUrl: string;
@@ -16,7 +16,7 @@ class ApiClient {
     const url = `${this.baseUrl}${endpoint}`;
 
     const headers: HeadersInit = {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options.headers,
     };
 
@@ -27,7 +27,7 @@ class ApiClient {
 
     if (!response.ok) {
       const error: ApiError = await response.json().catch(() => ({
-        detail: 'An unexpected error occurred',
+        detail: "An unexpected error occurred",
         status: response.status,
       }));
       throw new Error(error.detail);
@@ -41,25 +41,25 @@ class ApiClient {
   }
 
   async get<T>(endpoint: string): Promise<T> {
-    return this.request<T>(endpoint, { method: 'GET' });
+    return this.request<T>(endpoint, { method: "GET" });
   }
 
   async post<T>(endpoint: string, data: unknown): Promise<T> {
     return this.request<T>(endpoint, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(data),
     });
   }
 
   async put<T>(endpoint: string, data: unknown): Promise<T> {
     return this.request<T>(endpoint, {
-      method: 'PUT',
+      method: "PUT",
       body: JSON.stringify(data),
     });
   }
 
   async delete<T>(endpoint: string): Promise<T> {
-    return this.request<T>(endpoint, { method: 'DELETE' });
+    return this.request<T>(endpoint, { method: "DELETE" });
   }
 }
 

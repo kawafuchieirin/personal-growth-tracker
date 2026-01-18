@@ -1,4 +1,4 @@
-export type MilestoneStatus = 'not_started' | 'in_progress' | 'completed';
+export type MilestoneStatus = "not_started" | "in_progress" | "completed";
 
 export interface Milestone {
   milestone_id: string;
@@ -28,7 +28,7 @@ export interface UpdateMilestoneInput {
 }
 
 export const MILESTONE_STATUS_LABELS: Record<MilestoneStatus, string> = {
-  not_started: '未開始',
-  in_progress: '進行中',
-  completed: '完了',
+  not_started: "未開始",
+  in_progress: "進行中",
+  completed: "完了",
 };

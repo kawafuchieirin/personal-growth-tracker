@@ -1,1 +1,1 @@
-export { SkillChart } from './SkillChart';
+export { SkillChart } from "./SkillChart";

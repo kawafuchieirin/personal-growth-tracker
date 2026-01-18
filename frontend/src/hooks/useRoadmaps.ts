@@ -1,6 +1,10 @@
-import { useState, useEffect, useCallback } from 'react';
-import { roadmapsService } from '@/services';
-import type { Milestone, CreateMilestoneInput, UpdateMilestoneInput } from '@/types';
+import { useState, useEffect, useCallback } from "react";
+import { roadmapsService } from "@/services";
+import type {
+  Milestone,
+  CreateMilestoneInput,
+  UpdateMilestoneInput,
+} from "@/types";
 
 export function useRoadmaps(goalId: string | undefined) {
   const [milestones, setMilestones] = useState<Milestone[]>([]);
@@ -19,7 +23,9 @@ export function useRoadmaps(goalId: string | undefined) {
       const data = await roadmapsService.getByGoalId(goalId);
       setMilestones(data.sort((a, b) => a.order - b.order));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch milestones');
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch milestones"
+      );
     } finally {
       setLoading(false);
     }

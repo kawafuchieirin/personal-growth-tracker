@@ -1,5 +1,9 @@
-export type GoalStatus = 'not_started' | 'in_progress' | 'completed' | 'on_hold';
-export type GoalPriority = 'low' | 'medium' | 'high';
+export type GoalStatus =
+  | "not_started"
+  | "in_progress"
+  | "completed"
+  | "on_hold";
+export type GoalPriority = "low" | "medium" | "high";
 
 export interface Goal {
   goal_id: string;
@@ -31,14 +35,14 @@ export interface UpdateGoalInput {
 }
 
 export const GOAL_STATUS_LABELS: Record<GoalStatus, string> = {
-  not_started: '未開始',
-  in_progress: '進行中',
-  completed: '完了',
-  on_hold: '保留中',
+  not_started: "未開始",
+  in_progress: "進行中",
+  completed: "完了",
+  on_hold: "保留中",
 };
 
 export const GOAL_PRIORITY_LABELS: Record<GoalPriority, string> = {
-  low: '低',
-  medium: '中',
-  high: '高',
+  low: "低",
+  medium: "中",
+  high: "高",
 };

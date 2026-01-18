@@ -1,35 +1,35 @@
-import { Link } from 'react-router-dom';
-import { Card } from '@/components/common/Card';
-import { Button } from '@/components/common/Button';
-import { Badge } from '@/components/common/Badge';
-import { ProgressBar } from '@/components/common/ProgressBar';
-import { useGoals, useSkills } from '@/hooks';
-import { formatDate, getDaysRemaining } from '@/utils';
-import type { GoalStatus, GoalPriority } from '@/types';
-import { GOAL_STATUS_LABELS, GOAL_PRIORITY_LABELS } from '@/types';
-import styles from './Dashboard.module.css';
+import { Link } from "react-router-dom";
+import { Card } from "@/components/common/Card";
+import { Button } from "@/components/common/Button";
+import { Badge } from "@/components/common/Badge";
+import { ProgressBar } from "@/components/common/ProgressBar";
+import { useGoals, useSkills } from "@/hooks";
+import { formatDate, getDaysRemaining } from "@/utils";
+import type { GoalStatus, GoalPriority } from "@/types";
+import { GOAL_STATUS_LABELS, GOAL_PRIORITY_LABELS } from "@/types";
+import styles from "./Dashboard.module.css";
 
 function getStatusVariant(status: GoalStatus) {
   switch (status) {
-    case 'completed':
-      return 'success';
-    case 'in_progress':
-      return 'primary';
-    case 'on_hold':
-      return 'warning';
+    case "completed":
+      return "success";
+    case "in_progress":
+      return "primary";
+    case "on_hold":
+      return "warning";
     default:
-      return 'default';
+      return "default";
   }
 }
 
 function getPriorityVariant(priority: GoalPriority) {
   switch (priority) {
-    case 'high':
-      return 'error';
-    case 'medium':
-      return 'warning';
+    case "high":
+      return "error";
+    case "medium":
+      return "warning";
     default:
-      return 'default';
+      return "default";
   }
 }
 
@@ -39,8 +39,10 @@ export function Dashboard() {
 
   const loading = goalsLoading || skillsLoading;
 
-  const completedGoals = goals.filter((g) => g.status === 'completed').length;
-  const inProgressGoals = goals.filter((g) => g.status === 'in_progress').length;
+  const completedGoals = goals.filter((g) => g.status === "completed").length;
+  const inProgressGoals = goals.filter(
+    (g) => g.status === "in_progress"
+  ).length;
   const averageProgress =
     goals.length > 0
       ? Math.round(goals.reduce((sum, g) => sum + g.progress, 0) / goals.length)
@@ -48,15 +50,21 @@ export function Dashboard() {
   const averageSkillLevel =
     skills.length > 0
       ? (skills.reduce((sum, s) => sum + s.level, 0) / skills.length).toFixed(1)
-      : '0';
+      : "0";
 
   const recentGoals = [...goals]
-    .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
+    .sort(
+      (a, b) =>
+        new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+    )
     .slice(0, 5);
 
   const upcomingDeadlines = goals
-    .filter((g) => g.status !== 'completed')
-    .sort((a, b) => new Date(a.target_date).getTime() - new Date(b.target_date).getTime())
+    .filter((g) => g.status !== "completed")
+    .sort(
+      (a, b) =>
+        new Date(a.target_date).getTime() - new Date(b.target_date).getTime()
+    )
     .slice(0, 5);
 
   if (loading) {
@@ -133,13 +141,19 @@ export function Dashboard() {
                     <div className={styles.goalCard}>
                       <div className={styles.goalHeader}>
                         <h3 className={styles.goalTitle}>{goal.title}</h3>
-                        <Badge variant={getPriorityVariant(goal.priority)} size="sm">
+                        <Badge
+                          variant={getPriorityVariant(goal.priority)}
+                          size="sm"
+                        >
                           {GOAL_PRIORITY_LABELS[goal.priority]}
                         </Badge>
                       </div>
                       <ProgressBar value={goal.progress} size="sm" showLabel />
                       <div className={styles.goalFooter}>
-                        <Badge variant={getStatusVariant(goal.status)} size="sm">
+                        <Badge
+                          variant={getStatusVariant(goal.status)}
+                          size="sm"
+                        >
                           {GOAL_STATUS_LABELS[goal.status]}
                         </Badge>
                         <span className={styles.goalDate}>
@@ -180,20 +194,22 @@ export function Dashboard() {
                     <Card padding="sm" hoverable>
                       <div className={styles.deadlineCard}>
                         <div className={styles.deadlineInfo}>
-                          <span className={styles.deadlineTitle}>{goal.title}</span>
+                          <span className={styles.deadlineTitle}>
+                            {goal.title}
+                          </span>
                           <span
                             className={`${styles.deadlineDays} ${
                               isOverdue
                                 ? styles.overdue
                                 : isUrgent
                                   ? styles.urgent
-                                  : ''
+                                  : ""
                             }`}
                           >
                             {isOverdue
                               ? `${Math.abs(daysRemaining)}日超過`
                               : daysRemaining === 0
-                                ? '今日'
+                                ? "今日"
                                 : `あと${daysRemaining}日`}
                           </span>
                         </div>

@@ -1,9 +1,9 @@
-import { Badge } from '@/components/common/Badge';
-import { Button } from '@/components/common/Button';
-import { formatDate, isOverdue } from '@/utils';
-import type { Milestone, MilestoneStatus } from '@/types';
-import { MILESTONE_STATUS_LABELS } from '@/types';
-import styles from './MilestoneCard.module.css';
+import { Badge } from "@/components/common/Badge";
+import { Button } from "@/components/common/Button";
+import { formatDate, isOverdue } from "@/utils";
+import type { Milestone, MilestoneStatus } from "@/types";
+import { MILESTONE_STATUS_LABELS } from "@/types";
+import styles from "./MilestoneCard.module.css";
 
 interface MilestoneCardProps {
   milestone: Milestone;
@@ -14,12 +14,12 @@ interface MilestoneCardProps {
 
 function getStatusVariant(status: MilestoneStatus) {
   switch (status) {
-    case 'completed':
-      return 'success';
-    case 'in_progress':
-      return 'primary';
+    case "completed":
+      return "success";
+    case "in_progress":
+      return "primary";
     default:
-      return 'default';
+      return "default";
   }
 }
 
@@ -29,10 +29,15 @@ export function MilestoneCard({
   onDelete,
   onStatusChange,
 }: MilestoneCardProps) {
-  const isOverdueDate = isOverdue(milestone.due_date) && milestone.status !== 'completed';
+  const isOverdueDate =
+    isOverdue(milestone.due_date) && milestone.status !== "completed";
 
   const handleNextStatus = () => {
-    const statusOrder: MilestoneStatus[] = ['not_started', 'in_progress', 'completed'];
+    const statusOrder: MilestoneStatus[] = [
+      "not_started",
+      "in_progress",
+      "completed",
+    ];
     const currentIndex = statusOrder.indexOf(milestone.status);
     const nextIndex = (currentIndex + 1) % statusOrder.length;
     const nextStatus = statusOrder[nextIndex];
@@ -55,7 +60,9 @@ export function MilestoneCard({
           <p className={styles.description}>{milestone.description}</p>
         )}
         <div className={styles.footer}>
-          <span className={`${styles.date} ${isOverdueDate ? styles.overdue : ''}`}>
+          <span
+            className={`${styles.date} ${isOverdueDate ? styles.overdue : ""}`}
+          >
             期限: {formatDate(milestone.due_date)}
           </span>
           <div className={styles.actions}>

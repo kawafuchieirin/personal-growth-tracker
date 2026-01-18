@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
-import { skillsService } from '@/services';
-import { useUser } from '@/contexts';
-import type { Skill, CreateSkillInput, UpdateSkillInput } from '@/types';
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { skillsService } from "@/services";
+import { useUser } from "@/contexts";
+import type { Skill, CreateSkillInput, UpdateSkillInput } from "@/types";
 
 export function useSkills() {
   const { user } = useUser();
@@ -16,7 +16,7 @@ export function useSkills() {
       const data = await skillsService.getAll(user.id);
       setSkills(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch skills');
+      setError(err instanceof Error ? err.message : "Failed to fetch skills");
     } finally {
       setLoading(false);
     }
@@ -35,13 +35,16 @@ export function useSkills() {
     [user.id]
   );
 
-  const updateSkill = useCallback(async (skillId: string, data: UpdateSkillInput) => {
-    const updatedSkill = await skillsService.update(skillId, data);
-    setSkills((prev) =>
-      prev.map((skill) => (skill.skill_id === skillId ? updatedSkill : skill))
-    );
-    return updatedSkill;
-  }, []);
+  const updateSkill = useCallback(
+    async (skillId: string, data: UpdateSkillInput) => {
+      const updatedSkill = await skillsService.update(skillId, data);
+      setSkills((prev) =>
+        prev.map((skill) => (skill.skill_id === skillId ? updatedSkill : skill))
+      );
+      return updatedSkill;
+    },
+    []
+  );
 
   const deleteSkill = useCallback(async (skillId: string) => {
     await skillsService.delete(skillId);
@@ -54,15 +57,12 @@ export function useSkills() {
   }, [skills]);
 
   const skillsByCategory = useMemo(() => {
-    return skills.reduce<Record<string, Skill[]>>(
-      (acc, skill) => {
-        const categorySkills = acc[skill.category] ?? [];
-        categorySkills.push(skill);
-        acc[skill.category] = categorySkills;
-        return acc;
-      },
-      {}
-    );
+    return skills.reduce<Record<string, Skill[]>>((acc, skill) => {
+      const categorySkills = acc[skill.category] ?? [];
+      categorySkills.push(skill);
+      acc[skill.category] = categorySkills;
+      return acc;
+    }, {});
   }, [skills]);
 
   return {
