@@ -53,22 +53,13 @@ jobs:
         run: poetry run mypy apis/ --ignore-missing-imports
 
       - name: Run Goals API tests
-        run: |
-          cd apis/goals
-          poetry run pytest tests/ -v
-        working-directory: backend
+        run: PYTHONPATH=apis/goals poetry run pytest apis/goals/tests/ -v
 
       - name: Run Skills API tests
-        run: |
-          cd apis/skills
-          poetry run pytest tests/ -v
-        working-directory: backend
+        run: PYTHONPATH=apis/skills poetry run pytest apis/skills/tests/ -v
 
       - name: Run Roadmaps API tests
-        run: |
-          cd apis/roadmaps
-          poetry run pytest tests/ -v
-        working-directory: backend
+        run: PYTHONPATH=apis/roadmaps poetry run pytest apis/roadmaps/tests/ -v
 
   frontend:
     name: Frontend CI
