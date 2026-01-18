@@ -83,13 +83,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: "npm"
-          cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
         run: |
           cd frontend
-          npm ci
+          npm install
 
       - name: Build
         env:
@@ -143,13 +141,13 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Terraform Init
-        working-directory: infrastructure/environments/${{ github.event.inputs.environment || 'dev' }}
+        working-directory: infrastructure
         run: terraform init
 
       - name: Terraform Plan
-        working-directory: infrastructure/environments/${{ github.event.inputs.environment || 'dev' }}
+        working-directory: infrastructure
         run: terraform plan -out=tfplan
 
       - name: Terraform Apply
-        working-directory: infrastructure/environments/${{ github.event.inputs.environment || 'dev' }}
+        working-directory: infrastructure
         run: terraform apply -auto-approve tfplan
