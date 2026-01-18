@@ -1,0 +1,143 @@
+.container {
+  position: relative;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.title {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.yearSelect {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+
+.yearSelect:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
+}
+
+.graphContainer {
+  display: flex;
+  gap: var(--spacing-xs);
+  overflow-x: auto;
+  padding-bottom: var(--spacing-sm);
+}
+
+.weekdayLabels {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding-top: 20px;
+}
+
+.weekdayLabel {
+  height: 11px;
+  font-size: 9px;
+  color: var(--text-tertiary);
+  line-height: 11px;
+}
+
+.graphWrapper {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.monthLabels {
+  position: relative;
+  height: 16px;
+  margin-bottom: 4px;
+}
+
+.monthLabel {
+  position: absolute;
+  font-size: 10px;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+.graph {
+  display: flex;
+  gap: 3px;
+}
+
+.week {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.cell {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.cell:hover {
+  transform: scale(1.2);
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  margin-top: var(--spacing-md);
+}
+
+.legendLabel {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  margin: 0 4px;
+}
+
+.legendCell {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.tooltip {
+  position: fixed;
+  transform: translateX(-50%) translateY(-100%);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm);
+  font-size: var(--font-size-xs);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-lg);
+  pointer-events: none;
+  z-index: 1000;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.loading,
+.error,
+.empty {
+  text-align: center;
+  padding: var(--spacing-lg);
+  color: var(--text-secondary);
+}
+
+.error {
+  color: var(--color-error-500);
+}

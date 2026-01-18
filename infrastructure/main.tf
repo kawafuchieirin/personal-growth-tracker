@@ -54,7 +54,14 @@ variable "project_name" {
 variable "apis" {
   description = "List of API names"
   type        = list(string)
-  default     = ["goals", "roadmaps", "skills"]
+  default     = ["goals", "roadmaps", "skills", "habits"]
+}
+
+variable "slack_webhook_url" {
+  description = "Slack webhook URL for habit reminders"
+  type        = string
+  default     = ""
+  sensitive   = true
 }
 
 variable "github_repository" {
@@ -74,11 +81,14 @@ module "dynamodb" {
 module "lambda" {
   source = "./modules/lambda"
 
-  project_name        = var.project_name
-  apis                = var.apis
-  goals_table_name    = module.dynamodb.goals_table_name
-  roadmaps_table_name = module.dynamodb.roadmaps_table_name
-  skills_table_name   = module.dynamodb.skills_table_name
+  project_name          = var.project_name
+  apis                  = var.apis
+  goals_table_name      = module.dynamodb.goals_table_name
+  roadmaps_table_name   = module.dynamodb.roadmaps_table_name
+  skills_table_name     = module.dynamodb.skills_table_name
+  habits_table_name     = module.dynamodb.habits_table_name
+  habit_logs_table_name = module.dynamodb.habit_logs_table_name
+  slack_webhook_url     = var.slack_webhook_url
 }
 
 module "api_gateway" {

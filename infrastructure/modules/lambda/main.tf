@@ -11,7 +11,7 @@ variable "project_name" {
 variable "apis" {
   description = "List of API names"
   type        = list(string)
-  default     = ["goals", "roadmaps", "skills"]
+  default     = ["goals", "roadmaps", "skills", "habits"]
 }
 
 variable "goals_table_name" {
@@ -27,6 +27,31 @@ variable "roadmaps_table_name" {
 variable "skills_table_name" {
   description = "DynamoDB skills table name"
   type        = string
+}
+
+variable "habits_table_name" {
+  description = "DynamoDB habits table name"
+  type        = string
+  default     = "personal-growth-tracker-habits"
+}
+
+variable "habit_logs_table_name" {
+  description = "DynamoDB habit logs table name"
+  type        = string
+  default     = "personal-growth-tracker-habit-logs"
+}
+
+variable "slack_webhook_url" {
+  description = "Slack webhook URL for habit reminders"
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "reminder_schedule" {
+  description = "Cron expression for habit reminder (default: 9pm JST daily)"
+  type        = string
+  default     = "cron(0 12 * * ? *)" # 21:00 JST = 12:00 UTC
 }
 
 data "aws_caller_identity" "current" {}
@@ -75,12 +100,16 @@ data "aws_iam_policy_document" "lambda_policy" {
       "dynamodb:UpdateItem",
       "dynamodb:DeleteItem",
       "dynamodb:Query",
-      "dynamodb:Scan"
+      "dynamodb:Scan",
+      "dynamodb:BatchWriteItem"
     ]
     resources = [
       "arn:aws:dynamodb:*:*:table/${var.goals_table_name}",
       "arn:aws:dynamodb:*:*:table/${var.roadmaps_table_name}",
-      "arn:aws:dynamodb:*:*:table/${var.skills_table_name}"
+      "arn:aws:dynamodb:*:*:table/${var.skills_table_name}",
+      "arn:aws:dynamodb:*:*:table/${var.habits_table_name}",
+      "arn:aws:dynamodb:*:*:table/${var.habit_logs_table_name}",
+      "arn:aws:dynamodb:*:*:table/${var.habit_logs_table_name}/index/*"
     ]
   }
 }
@@ -142,10 +171,13 @@ resource "aws_lambda_function" "api" {
 
   environment {
     variables = {
-      GOALS_TABLE_NAME    = var.goals_table_name
-      ROADMAPS_TABLE_NAME = var.roadmaps_table_name
-      SKILLS_TABLE_NAME   = var.skills_table_name
-      DEBUG               = "false"
+      GOALS_TABLE_NAME      = var.goals_table_name
+      ROADMAPS_TABLE_NAME   = var.roadmaps_table_name
+      SKILLS_TABLE_NAME     = var.skills_table_name
+      HABITS_TABLE_NAME     = var.habits_table_name
+      HABIT_LOGS_TABLE_NAME = var.habit_logs_table_name
+      SLACK_WEBHOOK_URL     = var.slack_webhook_url
+      DEBUG                 = "false"
     }
   }
 
@@ -174,6 +206,79 @@ resource "aws_cloudwatch_log_group" "api" {
 
   name              = "/aws/lambda/${var.project_name}-${each.key}"
   retention_in_days = 14
+}
+
+# =============================================================================
+# Habit Reminder Lambda (Scheduled)
+# =============================================================================
+
+resource "aws_lambda_function" "habit_reminder" {
+  count = var.slack_webhook_url != "" ? 1 : 0
+
+  function_name = "${var.project_name}-habit-reminder"
+  role          = aws_iam_role.lambda.arn
+  package_type  = "Image"
+  timeout       = 30
+  memory_size   = 256
+
+  image_uri = "${aws_ecr_repository.api["habits"].repository_url}:latest"
+
+  image_config {
+    command = ["main.lambda_reminder_handler"]
+  }
+
+  environment {
+    variables = {
+      HABITS_TABLE_NAME     = var.habits_table_name
+      HABIT_LOGS_TABLE_NAME = var.habit_logs_table_name
+      SLACK_WEBHOOK_URL     = var.slack_webhook_url
+      DEBUG                 = "false"
+    }
+  }
+
+  lifecycle {
+    ignore_changes = [image_uri]
+  }
+
+  depends_on = [aws_ecr_repository.api]
+}
+
+resource "aws_cloudwatch_log_group" "habit_reminder" {
+  count = var.slack_webhook_url != "" ? 1 : 0
+
+  name              = "/aws/lambda/${var.project_name}-habit-reminder"
+  retention_in_days = 14
+}
+
+# =============================================================================
+# EventBridge Schedule for Habit Reminders
+# =============================================================================
+
+resource "aws_cloudwatch_event_rule" "habit_reminder" {
+  count = var.slack_webhook_url != "" ? 1 : 0
+
+  name                = "${var.project_name}-habit-reminder"
+  description         = "Trigger habit reminder Lambda function on schedule"
+  schedule_expression = var.reminder_schedule
+}
+
+resource "aws_cloudwatch_event_target" "habit_reminder" {
+  count = var.slack_webhook_url != "" ? 1 : 0
+
+  rule      = aws_cloudwatch_event_rule.habit_reminder[0].name
+  target_id = "habit-reminder-lambda"
+  arn       = aws_lambda_function.habit_reminder[0].arn
+  input     = jsonencode({ user_id = "default" })
+}
+
+resource "aws_lambda_permission" "habit_reminder" {
+  count = var.slack_webhook_url != "" ? 1 : 0
+
+  statement_id  = "AllowExecutionFromEventBridge"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.habit_reminder[0].function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.habit_reminder[0].arn
 }
 
 # =============================================================================

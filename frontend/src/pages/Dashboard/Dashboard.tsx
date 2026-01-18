@@ -3,11 +3,20 @@ import { Card } from "@/components/common/Card";
 import { Button } from "@/components/common/Button";
 import { Badge } from "@/components/common/Badge";
 import { ProgressBar } from "@/components/common/ProgressBar";
-import { useGoals, useSkills } from "@/hooks";
+import { useGoals, useSkills, useTodayHabits } from "@/hooks";
 import { formatDate, getDaysRemaining } from "@/utils";
 import type { GoalStatus, GoalPriority } from "@/types";
-import { GOAL_STATUS_LABELS, GOAL_PRIORITY_LABELS } from "@/types";
+import {
+  GOAL_STATUS_LABELS,
+  GOAL_PRIORITY_LABELS,
+  HABIT_FREQUENCY_LABELS,
+} from "@/types";
 import styles from "./Dashboard.module.css";
+
+function getHabitProgressColor(progress: number): string {
+  const opacity = progress / 100;
+  return `rgba(22, 163, 74, ${opacity * 0.2})`;
+}
 
 function getStatusVariant(status: GoalStatus) {
   switch (status) {
@@ -36,8 +45,18 @@ function getPriorityVariant(priority: GoalPriority) {
 export function Dashboard() {
   const { goals, loading: goalsLoading } = useGoals();
   const { skills, loading: skillsLoading } = useSkills();
+  const {
+    habits,
+    loading: habitsLoading,
+    isCompleted,
+    completedCount,
+    totalCount,
+    toggleCompletion,
+  } = useTodayHabits();
 
-  const loading = goalsLoading || skillsLoading;
+  const loading = goalsLoading || skillsLoading || habitsLoading;
+  const habitProgress =
+    totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
 
   const completedGoals = goals.filter((g) => g.status === "completed").length;
   const inProgressGoals = goals.filter(
@@ -106,6 +125,24 @@ export function Dashboard() {
             <span className={styles.statSub}>
               平均レベル: {averageSkillLevel}
             </span>
+          </div>
+        </Card>
+        <Card padding="lg">
+          <div
+            className={styles.statCard}
+            style={{
+              backgroundColor: getHabitProgressColor(habitProgress),
+              borderRadius: "var(--radius-md)",
+              padding: "var(--spacing-sm)",
+              margin: "calc(-1 * var(--spacing-sm))",
+              transition: "background-color 0.3s ease",
+            }}
+          >
+            <span className={styles.statLabel}>今日の習慣</span>
+            <span className={styles.statValue}>
+              {completedCount}/{totalCount}
+            </span>
+            <ProgressBar value={habitProgress} variant="success" size="sm" />
           </div>
         </Card>
       </div>
@@ -224,6 +261,104 @@ export function Dashboard() {
         </div>
       </div>
 
+      <div className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <h2>今日の習慣</h2>
+          <Link to="/habits">
+            <Button variant="ghost" size="sm">
+              すべて表示
+            </Button>
+          </Link>
+        </div>
+        <div
+          className={styles.habitTableContainer}
+          style={{
+            backgroundColor: getHabitProgressColor(habitProgress),
+            transition: "background-color 0.3s ease",
+          }}
+        >
+          {habits.length === 0 ? (
+            <Card padding="lg">
+              <div className={styles.empty}>
+                <p>今日の習慣はありません</p>
+                <Link to="/habits">
+                  <Button>習慣を作成</Button>
+                </Link>
+              </div>
+            </Card>
+          ) : (
+            <table className={styles.habitTable}>
+              <thead>
+                <tr>
+                  <th>状態</th>
+                  <th>習慣名</th>
+                  <th>頻度</th>
+                  <th>リマインダー</th>
+                </tr>
+              </thead>
+              <tbody>
+                {habits.map((habit) => {
+                  const completed = isCompleted(habit.habit_id);
+                  return (
+                    <tr
+                      key={habit.habit_id}
+                      className={completed ? styles.completedRow : ""}
+                    >
+                      <td>
+                        <button
+                          type="button"
+                          className={`${styles.checkButton} ${completed ? styles.checked : ""}`}
+                          onClick={() => toggleCompletion(habit.habit_id)}
+                          style={
+                            {
+                              "--habit-color": habit.color,
+                            } as React.CSSProperties
+                          }
+                        >
+                          {completed && (
+                            <svg
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="3"
+                            >
+                              <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                          )}
+                        </button>
+                      </td>
+                      <td>
+                        <div className={styles.habitNameCell}>
+                          <div
+                            className={styles.habitColorDot}
+                            style={{ backgroundColor: habit.color }}
+                          />
+                          <span
+                            className={completed ? styles.completedText : ""}
+                          >
+                            {habit.name}
+                          </span>
+                        </div>
+                      </td>
+                      <td>
+                        <Badge variant="default" size="sm">
+                          {HABIT_FREQUENCY_LABELS[habit.frequency]}
+                        </Badge>
+                      </td>
+                      <td>
+                        {habit.reminder_enabled && habit.reminder_time
+                          ? habit.reminder_time
+                          : "-"}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          )}
+        </div>
+      </div>
+
       <div className={styles.quickActions}>
         <h2>クイックアクション</h2>
         <div className={styles.actionButtons}>
@@ -232,6 +367,9 @@ export function Dashboard() {
           </Link>
           <Link to="/skills">
             <Button variant="secondary">スキルを追加</Button>
+          </Link>
+          <Link to="/habits">
+            <Button variant="secondary">習慣を追加</Button>
           </Link>
         </div>
       </div>
