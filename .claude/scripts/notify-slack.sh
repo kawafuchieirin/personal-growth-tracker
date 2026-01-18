@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# プロジェクトルートの.envファイルから環境変数を読み込む
+ENV_FILE="${CLAUDE_PROJECT_DIR:-.}/.env"
+if [ -f "$ENV_FILE" ]; then
+  export $(grep -v '^#' "$ENV_FILE" | grep SLACK_WEBHOOK_URL | xargs)
+fi
+
 # Slack Webhook URL (環境変数から取得)
 SLACK_WEBHOOK_URL="${SLACK_WEBHOOK_URL:-}"
 

@@ -4,6 +4,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from mangum import Mangum
 
+from app.config import get_settings
+
+settings = get_settings()
+
 app = FastAPI(
     title="Personal Growth Tracker API",
     description="個人の成長を追跡・可視化するためのAPI",
@@ -12,7 +16,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # TODO: 本番環境では適切なオリジンを設定
+    allow_origins=settings.cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

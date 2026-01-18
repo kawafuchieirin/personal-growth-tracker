@@ -1,25 +1,20 @@
-variable "project_name" {
-  type = string
-}
-
-variable "environment" {
-  type = string
-}
-
 variable "lambda_function_arn" {
-  type = string
+  description = "Lambda function ARN"
+  type        = string
 }
 
 variable "lambda_function_name" {
-  type = string
+  description = "Lambda function name"
+  type        = string
 }
 
 variable "aws_region" {
-  type = string
+  description = "AWS region"
+  type        = string
 }
 
 resource "aws_apigatewayv2_api" "api" {
-  name          = "${var.project_name}-${var.environment}-api"
+  name          = "api"
   protocol_type = "HTTP"
 
   cors_configuration {
@@ -27,20 +22,12 @@ resource "aws_apigatewayv2_api" "api" {
     allow_methods = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
     allow_headers = ["*"]
   }
-
-  tags = {
-    Environment = var.environment
-  }
 }
 
 resource "aws_apigatewayv2_stage" "api" {
   api_id      = aws_apigatewayv2_api.api.id
-  name        = var.environment
+  name        = "$default"
   auto_deploy = true
-
-  tags = {
-    Environment = var.environment
-  }
 }
 
 resource "aws_apigatewayv2_integration" "lambda" {
