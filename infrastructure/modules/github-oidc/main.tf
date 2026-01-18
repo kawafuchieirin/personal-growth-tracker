@@ -53,7 +53,9 @@ resource "aws_iam_role_policy" "s3_deploy" {
         ]
         Resource = [
           "arn:aws:s3:::${var.project_name}-*-frontend",
-          "arn:aws:s3:::${var.project_name}-*-frontend/*"
+          "arn:aws:s3:::${var.project_name}-*-frontend/*",
+          "arn:aws:s3:::pgt-frontend",
+          "arn:aws:s3:::pgt-frontend/*"
         ]
       }
     ]

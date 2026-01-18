@@ -120,9 +120,9 @@ jobs:
 
       - name: Deploy to S3
         env:
-          ENVIRONMENT: ${{ github.event.inputs.environment || 'dev' }}
+          S3_BUCKET: ${{ vars.S3_BUCKET_NAME || 'pgt-frontend' }}
         run: |
-          aws s3 sync frontend/dist s3://${{ env.PROJECT_NAME }}-${ENVIRONMENT}-frontend --delete
+          aws s3 sync frontend/dist s3://${S3_BUCKET} --delete
 
       - name: Invalidate CloudFront cache
         env:
