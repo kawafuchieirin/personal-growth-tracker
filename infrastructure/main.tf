@@ -57,6 +57,12 @@ variable "apis" {
   default     = ["goals", "roadmaps", "skills"]
 }
 
+variable "github_repository" {
+  description = "GitHub repository in format 'owner/repo'"
+  type        = string
+  default     = "kawafuchieirin/personal-growth-tracker"
+}
+
 # =============================================================================
 # Modules
 # =============================================================================
@@ -93,6 +99,18 @@ module "cloudfront" {
   source = "./modules/cloudfront"
 }
 
+module "github_oidc" {
+  source = "./modules/github-oidc"
+
+  project_name      = var.project_name
+  github_repository = var.github_repository
+
+  tags = {
+    Project   = var.project_name
+    ManagedBy = "terraform"
+  }
+}
+
 # =============================================================================
 # Outputs
 # =============================================================================
@@ -120,4 +138,9 @@ output "cloudfront_domain" {
 output "frontend_bucket" {
   description = "Frontend S3 bucket"
   value       = module.cloudfront.s3_bucket_name
+}
+
+output "github_actions_role_arn" {
+  description = "IAM Role ARN for GitHub Actions (set as AWS_ROLE_ARN secret)"
+  value       = module.github_oidc.role_arn
 }
