@@ -4,10 +4,9 @@ version = "0.1.0"
 description = "Personal Growth Tracker API"
 authors = ["Your Name <you@example.com>"]
 readme = "README.md"
-packages = [{include = "app"}]
 
 [tool.poetry.dependencies]
-python = "^3.14"
+python = "^3.12"
 fastapi = "^0.115.0"
 uvicorn = {extras = ["standard"], version = "^0.34.0"}
 boto3 = "^1.35.0"
@@ -30,7 +29,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
-target-version = "py314"
+target-version = "py312"
 line-length = 88
 
 [tool.ruff.lint]
@@ -46,19 +45,19 @@ select = [
 ignore = ["E501"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["app"]
+known-first-party = ["apis"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["apis/goals/tests", "apis/skills/tests", "apis/roadmaps/tests"]
 asyncio_mode = "auto"
 
 [tool.mypy]
-python_version = "3.14"
+python_version = "3.12"
 strict = true
 plugins = ["pydantic.mypy"]
 
 [tool.coverage.run]
-source = ["app"]
+source = ["apis"]
 branch = true
 
 [tool.coverage.report]

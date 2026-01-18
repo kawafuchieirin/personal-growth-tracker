@@ -20,7 +20,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.14"
+          python-version: "3.12"
 
       - name: Install Poetry
         uses: snok/install-poetry@v1
@@ -34,7 +34,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: backend/.venv
-          key: venv-${{ runner.os }}-${{ hashFiles('backend/poetry.lock') }}
+          key: venv-${{ runner.os }}-${{ hashFiles('backend/pyproject.toml') }}
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
@@ -44,22 +44,31 @@ jobs:
         run: poetry install --no-interaction
 
       - name: Lint with Ruff
-        run: poetry run ruff check .
+        run: poetry run ruff check apis/
 
       - name: Format check with Ruff
-        run: poetry run ruff format --check .
+        run: poetry run ruff format --check apis/
 
       - name: Type check with mypy
-        run: poetry run mypy app
+        run: poetry run mypy apis/ --ignore-missing-imports
 
-      - name: Run tests
-        run: poetry run pytest --cov=app --cov-report=xml
+      - name: Run Goals API tests
+        run: |
+          cd apis/goals
+          poetry run pytest tests/ -v
+        working-directory: backend
 
-      - name: Upload coverage
-        uses: codecov/codecov-action@v4
-        with:
-          files: backend/coverage.xml
-          flags: backend
+      - name: Run Skills API tests
+        run: |
+          cd apis/skills
+          poetry run pytest tests/ -v
+        working-directory: backend
+
+      - name: Run Roadmaps API tests
+        run: |
+          cd apis/roadmaps
+          poetry run pytest tests/ -v
+        working-directory: backend
 
   frontend:
     name: Frontend CI

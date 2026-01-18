@@ -8,10 +8,8 @@ from unittest.mock import patch, MagicMock
 @pytest.fixture
 def mock_dynamodb():
     """Mock DynamoDB client."""
-    with patch("api_handler.RoadmapsClient") as mock:
-        client = MagicMock()
-        mock.return_value = client
-        yield client
+    with patch("api_handler.db") as mock:
+        yield mock
 
 
 @pytest.fixture
